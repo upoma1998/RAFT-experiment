@@ -1,0 +1,59 @@
+name: Phase 1 - JS
+
+on:
+  workflow_dispatch:
+    inputs:
+      runs:
+        description: "runs per config"
+        default: "10"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        project:
+          - 2fd-graphdoc
+          - actions-javascript-action
+          - akiran-react-slick
+          - antvis-ava
+          - apollographql-apollo-cache-persist
+          - apollographql-apollo-client-devtools
+          - arqex-react-datetime
+          - atomiks-tippyjs-react
+          - auth0-lock
+          - aws-actions-configure-aws-credentials
+          - babel-preset-modules
+          - badges-shields
+          - bubenshchykov-ngrok
+          - clarus-redux-ship
+          - cyrilwanner-next-compose-plugins
+          - ds300-derivablejs
+          - emotion-js-facepaint
+          - facebook-react-native
+          - icedfrisby-icedfrisby
+          - jsonresume-resume-cli
+          - lukeraymonddowning-whenipress
+          - pixielabs-cavy
+          - reacttraining-react-stdio
+          - twilio-twilio-video-app-react
+          - zeke-semantic-pull-requests
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Phase 1 sweep for ${{ matrix.project }}
+        run: |
+          python3 phase1_runner.py --only js --project "${{ matrix.project }}" \
+            --runs "${{ github.event.inputs.runs || '10' }}" --max-minutes 340
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: js-${{ matrix.project }}
+          path: |
+            phase1-results/js/results/${{ matrix.project }}.csv
+            phase1-results/js/errors/${{ matrix.project }}.log
+          if-no-files-found: warn
+          retention-days: 14
