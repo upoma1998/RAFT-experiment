@@ -14,8 +14,28 @@ RESULTS_ROOT = ROOT / "phase1-results"
 REGISTRY = json.load(open(ROOT / "phase1_registry.json"))
 
 RUNS_PER_CONFIG_DEFAULT = 10
-DOCKER_DEVICE = "/dev/sdd"
 RUN_TIMEOUT_SEC = 25 * 60  # per docker invocation
+
+
+def detect_docker_device():
+    """Find the block device backing Docker's storage, for --device-*-bps flags.
+    Hardcoding this (e.g. /dev/sdd) only works on the machine it was measured on --
+    GitHub Actions runners and other hosts use different device names."""
+    for target in ("/var/lib/docker", "/"):
+        try:
+            r = subprocess.run(["findmnt", "-no", "SOURCE", "--target", target],
+                                capture_output=True, text=True, timeout=10)
+            src = r.stdout.strip().split("[")[0]  # findmnt shows "SOURCE[subpath]" for bind mounts
+        except Exception:
+            src = ""
+        if src and src.startswith("/dev/"):
+            base = re.sub(r'(nvme\d+n\d+)p?\d+$', r'\1', src)
+            base = re.sub(r'^(/dev/[a-z]+)\d+$', r'\1', base)
+            return base
+    return "/dev/sda"
+
+
+DOCKER_DEVICE = detect_docker_device()
 
 # Table I configs: cpus (cores), mem (docker --memory string), disk (read_kbps,write_kbps), net (down_kbit,up_kbit)
 CONFIGS = {
