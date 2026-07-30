@@ -38,7 +38,7 @@ CONFIGS = {
 }
 
 TESTCASE_RE = re.compile(
-    r'<testcase\b([^>]*)(?:/>|>(.*?)</testcase>)', re.S)
+    r'<testcase\b([^>]*?)(?:/>|>(.*?)</testcase>)', re.S)
 ATTR_RE = re.compile(r'(\w+)="([^"]*)"')
 MSG_RE = re.compile(r'<(failure|error)[^>]*message="([^"]*)"', re.S)
 
@@ -157,30 +157,38 @@ class ResultWriter:
 # ---------------- Java ----------------
 
 def java_project_info(image):
-    r = sh(["docker", "run", "--rm", image, "bash", "-c",
-            "cd /home/throttling && ls *.zip 2>/dev/null | tail -1"])
-    zipname = r.stdout.strip()
-    if not zipname:
-        raise RuntimeError(f"no zip found in image {image}: {r.stderr[:300]}")
-    base = zipname[:-4]
-    user_project, module = base.split("=", 1)
-    user_project = re.sub(r"-[0-9a-f]{6,}$", "", user_project)
-    user, project = user_project.split(".", 1)
-    module = module.replace("+", "/")
-    projdir = f"/home/throttling/{user}/{project}"
-    r2 = sh(["docker", "run", "--rm", image, "bash", "-c", f"cat {projdir}/mvn-test-command.sh"])
-    cmd = r2.stdout.strip()
-    if not cmd:
-        raise RuntimeError(f"no mvn-test-command.sh for {image}")
-    cmd = re.sub(r"-Dmaven\.repo\.local=\S+", "-Dmaven.repo.local=/home/throttling/deps", cmd)
-    cmd = re.sub(r"\|\s*tee\s+\S+", "", cmd)
-    cmd = cmd.replace("mvn ", "/home/throttling/apache-maven-3.5.4/bin/mvn ", 1)
-    return projdir, cmd
+    """Extract the real test-invocation command from the image's build history.
+    Handles both image generations: newer ones with a per-project mvn-test-command.sh
+    (referenced indirectly), and older ones where the full mvn invocation is only
+    ever baked into a 'zsh -c ...' build-history layer. Using history works for both,
+    since the actual command that pre-cached the image's dependencies is always there.
+    """
+    r = sh(["docker", "history", "--no-trunc", "--format", "{{.CreatedBy}}", image], timeout=60)
+    if r.returncode != 0:
+        raise RuntimeError(f"docker history failed for {image}: {r.stderr[:300]}")
+    line = None
+    for l in r.stdout.splitlines():
+        if re.search(r"\bmvn\b.*\btest\b", l):
+            line = l
+            break
+    if not line:
+        raise RuntimeError(f"no mvn test command found in docker history for {image}")
+    cmd = re.sub(r"^/bin/sh -c\s+", "", line).strip()
+    m = re.match(r"^zsh -c '(.*)'$", cmd, re.S)
+    shell = "zsh"
+    if m:
+        body = m.group(1)
+    else:
+        body = cmd  # not zsh-wrapped; run as-is
+        shell = "bash"
+    # drop any trailing cleanup that would destroy results before we can read them
+    body = re.sub(r";\s*rm\s+-rf?\s+\S*surefire-reports\S*\s*;?\s*$", ";", body.strip())
+    return body, shell
 
 
 def run_java(image, project_key, configs, runs, writer, deadline=None):
-    projdir, testcmd = java_project_info(image)
-    log(f"  java cmd: {testcmd[:160]}...")
+    testbody, shell = java_project_info(image)
+    log(f"  java cmd ({shell}): {testbody[:160]}...")
     for cfg_name in configs:
         if deadline and time.time() > deadline:
             log(f"  [{project_key}] deadline reached, stopping before config {cfg_name}")
@@ -196,20 +204,18 @@ def run_java(image, project_key, configs, runs, writer, deadline=None):
             down, up = cfg["net"]
             net_prelude = NET_PRELUDE.format(up=up, down=down)
         inner = f"""
-set -o pipefail
-cd {projdir}
 {net_prelude}
 for i in $(seq 1 {runs}); do
   echo "===RUN_START $i==="
-  rm -rf target/surefire-reports
-  {testcmd}
+  {testbody}
   echo "===MVN_EXIT $?==="
-  find target/surefire-reports -name 'TEST-*.xml' -exec cat {{}} \\; 2>/dev/null
+  find . -path '*/target/surefire-reports/TEST-*.xml' -exec cat {{}} \\; 2>/dev/null
+  find . -path '*/target/surefire-reports' -type d -exec rm -rf {{}} + 2>/dev/null
   echo "===RUN_END $i==="
 done
 """
         try:
-            r = sh(["docker", "run", "--rm", *flags, run_image, "bash", "-c", inner],
+            r = sh(["docker", "run", "--rm", *flags, run_image, shell, "-c", inner],
                    timeout=RUN_TIMEOUT_SEC * runs)
         except subprocess.TimeoutExpired as e:
             writer.write_error(cfg_name, "*", "TIMEOUT", str(e)[:2000])
