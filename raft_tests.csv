@@ -1,0 +1,54 @@
+language,slug,module,test-name,flaky_under_configs,num_throttled_configs_flaky,baseline_pass,baseline_fail,confidence
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectBlockingScenario8,C+N,2,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectScenario2,D+N,2,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectScenario3,D+N,2,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectScenario9,C+D,2,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue677Test,testIssue,D+N,2,10,0,high
+Java,apache_httpcore,org.apache.http.nio.protocol.TestAsyncNHttpHandlers,testDelayedHttpException,D,1,10,0,high
+JavaScript,apollographql-apollo-client-devtools,/home/npm-filter/TESTING_REPOS/apollo-client-devtools/src/application/components/Cache/__tests__/Cache.test.tsx,Cache component tests No cache data should leave the header blank instead of trying to show a cache ID,C,1,10,0,high
+JavaScript,apollographql-apollo-client-devtools,/home/npm-filter/TESTING_REPOS/apollo-client-devtools/src/application/components/Cache/__tests__/Cache.test.tsx,Cache component tests With cache data should show list of root cache ids in the sidebar,C,1,10,0,high
+JavaScript,apollographql-apollo-client-devtools,/home/npm-filter/TESTING_REPOS/apollo-client-devtools/src/application/components/Mutations/__tests__/Mutations.test.tsx,<Mutations /> queries render in the sidebar,C,1,10,0,high
+JavaScript,apollographql-apollo-client-devtools,/home/npm-filter/TESTING_REPOS/apollo-client-devtools/src/application/components/Queries/__tests__/Queries.test.tsx,<Queries /> renders query name,C,1,10,0,high
+JavaScript,apollographql-apollo-client-devtools,/home/npm-filter/TESTING_REPOS/apollo-client-devtools/src/application/components/Queries/__tests__/QueryViewer.test.tsx,<QueryViewer /> can copy the query data,C,1,10,0,high
+JavaScript,babel-preset-modules,/home/npm-filter/TESTING_REPOS/preset-modules/test/integration.test.js,integration should compile react-hooks-demo to less code than preset-env,C,1,10,0,high
+Python,celery-kombu,t.unit.transport.test_azureservicebus,test_basic_ack_when_already_settled,C,1,10,0,high
+Java,joel-costigliola_assertj-core,org.assertj.core.internal.iterables.Iterables_assertDoesNotHaveDuplicates_Test,should_pass_within_time_constraints,C,1,10,0,high
+Java,kevinsawicki_http-request,com.github.kevinsawicki.http.HttpRequestTest,basicProxyAuthentication,C,1,10,0,high
+Java,kevinsawicki_http-request,com.github.kevinsawicki.http.HttpRequestTest,getUrlEncodedWithPercent,C,1,10,0,high
+Java,kevinsawicki_http-request,com.github.kevinsawicki.http.HttpRequestTest,getUrlEncodedWithSpace,C,1,10,0,high
+Java,kevinsawicki_http-request,com.github.kevinsawicki.http.HttpRequestTest,getUrlEncodedWithUnicode,C,1,10,0,high
+Java,kevinsawicki_http-request,com.github.kevinsawicki.http.HttpRequestTest,singleVerifier,C,1,10,0,high
+Java,kevinsawicki_http-request,com.github.kevinsawicki.http.HttpRequestTest,verifierAccepts,C,1,10,0,high
+Java,orbit_orbit,com.ea.orbit.actors.test.ReminderTest,persistedTimerTest,C,1,10,0,high
+Java,orbit_orbit,com.ea.orbit.actors.test.TimerTest,timerTest,C,1,10,0,high
+Java,qos-ch_logback,ch.qos.logback.classic.net.SMTPAppender_GreenTest,testMultipleTo,C,1,10,0,high
+Java,qos-ch_logback,ch.qos.logback.classic.net.SMTPAppender_SubethaSMTPTest,authenticated,C,1,10,0,high
+Java,qos-ch_logback,ch.qos.logback.classic.net.SMTPAppender_SubethaSMTPTest,html,C,1,10,0,high
+Java,qos-ch_logback,ch.qos.logback.classic.net.SMTPAppender_SubethaSMTPTest,smoke,C,1,10,0,high
+Java,qos-ch_logback,ch.qos.logback.classic.net.SMTPAppender_SubethaSMTPTest,testMultipleTo,C,1,10,0,high
+Java,qos-ch_logback,ch.qos.logback.classic.rolling.UniqueFileTest,basic,C,1,10,0,high
+Java,qos-ch_logback,ch.qos.logback.classic.spi.PackagingDataCalculatorTest,perfTest,C,1,10,0,high
+Java,qos-ch_logback,ch.qos.logback.classic.turbo.ReconfigureOnChangeTest,fallbackToSafe,C,1,10,0,high
+Java,qos-ch_logback,ch.qos.logback.classic.turbo.ReconfigureOnChangeTest,scan_LOGBACK_474,C,1,10,0,high
+Java,qos-ch_logback,ch.qos.logback.core.AsyncAppenderBaseTest,lossyAppenderShouldOnlyLooseCertainEvents,C,1,10,0,high
+Java,qos-ch_logback,ch.qos.logback.core.AsyncAppenderBaseTest,workerShouldStopEvenIfInterruptExceptionConsumedWithinSubappender,M,1,10,0,high
+Java,qos-ch_logback,ch.qos.logback.core.FileAppenderResilienceTest,smoke,C,1,10,0,high
+Java,qos-ch_logback,ch.qos.logback.core.recovery.RecoveryCoordinatorTest,actualTime,C,1,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectBlockingScenario0,N,1,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectBlockingScenario1,N,1,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectBlockingScenario2,C,1,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectBlockingScenario3,N,1,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectBlockingScenario4,C,1,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectBlockingScenario9,C,1,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectScenario0,N,1,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectScenario1,N,1,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectScenario7,D,1,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue256Test,runReconnectScenario8,D,1,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue580Test,runNoCloseBlockingTestScenario2,C,1,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue580Test,runNoCloseBlockingTestScenario6,C,1,10,0,high
+Java,tootallnate_java-websocket,org.java_websocket.issues.Issue580Test,runNoCloseBlockingTestScenario7,C,1,10,0,high
+Java,wro4j_wro4j,ro.isdc.wro.extensions.processor.TestBourbonCssProcessor,shouldBeThreadSafe,D,1,10,0,high
+Java,zxing_zxing,com.google.zxing.aztec.encoder.EncoderTest,testAztecWriter,C,1,10,0,high
+Java,zxing_zxing,com.google.zxing.pdf417.decoder.ec.ErrorCorrectionTestCase,testTooManyErrors,N,1,10,0,high
+Java,hector-client_hector,me.prettyprint.hom.EntityManagerFactoryTest,testCreateEntityManager,C+D+N,3,0,10,low
+Java,hector-client_hector,me.prettyprint.cassandra.utils.TimeUUIDUtilsTest,testTimeUUIDWithClockResolution,C,1,0,10,low
