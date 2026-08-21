@@ -206,7 +206,7 @@ def java_project_info(image):
     return body, shell
 
 
-def run_java(image, project_key, configs, runs, writer, deadline=None):
+def run_java(image, project_key, configs, runs, writer, deadline=None, run_offset=0):
     testbody, shell = java_project_info(image)
     log(f"  java cmd ({shell}): {testbody[:160]}...")
     for cfg_name in configs:
@@ -245,6 +245,11 @@ done
         for chunk in chunks[1:]:
             idx_str, _, rest = chunk.partition("===")
             run_idx = idx_str.strip()
+            if run_offset:
+                try:
+                    run_idx = str(int(run_idx) + run_offset)
+                except ValueError:
+                    pass
             tests = parse_junit_blob(rest)
             if not tests:
                 writer.write_error(cfg_name, run_idx, "NO_TESTS_PARSED",
@@ -274,7 +279,7 @@ def python_project_info(image):
     return d.get("PROJECT_NAME"), d.get("PROJECT_URL"), d.get("PROJECT_HASH")
 
 
-def run_python(image, project_key, configs, runs, writer, deadline=None):
+def run_python(image, project_key, configs, runs, writer, deadline=None, run_offset=0):
     pname, purl, phash = python_project_info(image)
     if not pname:
         raise RuntimeError(f"could not read PROJECT_NAME env from {image}")
@@ -327,6 +332,8 @@ def run_python(image, project_key, configs, runs, writer, deadline=None):
                     found_any = True
                     run_idx_m = re.search(r"output(\d+)", xmlf.name)
                     run_idx = run_idx_m.group(1) if run_idx_m else "?"
+                    if run_offset and run_idx_m:
+                        run_idx = str(int(run_idx) + run_offset)
                     for classname, name, status, message in tests:
                         writer.write_test(cfg_name, run_idx, classname, name, status, message)
                         if status in ("failure", "error"):
@@ -341,7 +348,7 @@ def run_python(image, project_key, configs, runs, writer, deadline=None):
 
 # ---------------- JS (npm-filter) ----------------
 
-def run_js(image, project_key, configs, runs, writer, deadline=None):
+def run_js(image, project_key, configs, runs, writer, deadline=None, run_offset=0):
     for cfg_name in configs:
         if deadline and time.time() > deadline:
             log(f"  [{project_key}] deadline reached, stopping before config {cfg_name}")
@@ -356,7 +363,8 @@ def run_js(image, project_key, configs, runs, writer, deadline=None):
             flags = flags + ["--cap-add", "NET_ADMIN"]
             down, up = cfg["net"]
             entry_override = ["--entrypoint", "bash"]
-        for run_idx in range(1, runs + 1):
+        for local_idx in range(1, runs + 1):
+            run_idx = local_idx + run_offset
             results_host = RESULTS_ROOT / "js" / "_tmp" / project_key / cfg_name / str(run_idx)
             results_host.mkdir(parents=True, exist_ok=True)
             vol_flags = ["-v", f"{str(results_host)}:/home/npm-filter/results"]
@@ -402,6 +410,9 @@ def main():
     ap.add_argument("--project")
     ap.add_argument("--configs", default=",".join(CONFIGS.keys()))
     ap.add_argument("--runs", type=int, default=RUNS_PER_CONFIG_DEFAULT)
+    ap.add_argument("--run-offset", type=int, default=0,
+                     help="add this to every recorded run_index; lets multiple invocations "
+                          "append non-overlapping runs (e.g. --runs 10 --run-offset 20) to the same CSV")
     ap.add_argument("--max-minutes", type=float, default=None,
                      help="wall-clock budget for the whole invocation; stop gracefully before it elapses")
     args = ap.parse_args()
@@ -431,7 +442,8 @@ def main():
                     log(f"  PULL FAILED: {r.stderr[-300:]}")
                     writer.close()
                     continue
-                LANG_RUNNERS[lang](image, key, configs, args.runs, writer, deadline=deadline)
+                LANG_RUNNERS[lang](image, key, configs, args.runs, writer, deadline=deadline,
+                                    run_offset=args.run_offset)
             except Exception as e:
                 writer.write_error("*", "*", "FATAL", traceback.format_exc())
                 log(f"  FATAL: {e}")
