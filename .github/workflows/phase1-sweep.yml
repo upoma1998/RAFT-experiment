@@ -1,0 +1,46 @@
+name: Phase 1 - Sweep (one project x one config, 5-run batches)
+
+on:
+  workflow_dispatch:
+    inputs:
+      language:
+        description: "project language"
+        type: choice
+        options: [java, python, js]
+        required: true
+      project:
+        description: "registry project key (see phase1_registry.json)"
+        required: true
+      config:
+        description: "throttling config"
+        type: choice
+        options: [Baseline, C, M, D, N]
+        required: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        offset: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run 5 runs (offset ${{ matrix.offset }})
+        run: |
+          python3 phase1_runner.py --only "${{ inputs.language }}" --project "${{ inputs.project }}" \
+            --configs "${{ inputs.config }}" --runs 5 --run-offset ${{ matrix.offset }}
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.language }}-${{ inputs.project }}-${{ inputs.config }}-offset${{ matrix.offset }}
+          path: |
+            phase1-results/${{ inputs.language }}/results/${{ inputs.project }}.csv
+            phase1-results/${{ inputs.language }}/errors/${{ inputs.project }}.log
+          if-no-files-found: warn
+          retention-days: 14

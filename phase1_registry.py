@@ -31,6 +31,13 @@ def build_registry():
             key = t[: -len("_dot-latest")]
             key = re.sub(r"-[0-9a-f]{6,}$", "", key)
             java[key] = t
+        elif t.endswith("-latest"):
+            # java sub-module images: <owner>.<repo>-<sha>_<module.path>-latest
+            # (sha sits mid-string next to the module path, not at the end, so
+            # unlike the _dot-latest case there's nothing safe to strip further)
+            key = t[: -len("-latest")]
+            if key not in java:
+                java[key] = t
     return {"java": java, "python": python, "js": js}
 
 if __name__ == "__main__":
