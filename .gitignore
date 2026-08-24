@@ -2,3 +2,4 @@ phase1-results/
 phase1-*.log
 __pycache__/
 *.pyc
+trigger_log.csv

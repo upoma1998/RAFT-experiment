@@ -25,10 +25,18 @@ published on Docker Hub.
 
 89 projects x 5 configs (Baseline, C, M, D, N) x 50 runs = 22,250 test-runs,
 triggered as 445 separate `workflow_dispatch` calls (one per
-project x config), each spawning 10 jobs = 4,450 jobs total. Trigger via:
+project x config), each spawning 10 jobs = 4,450 jobs total.
+
+`trigger_sweep.py` drives this: it reads `phase1_registry.json`, fires one
+`gh workflow run phase1-sweep.yml -f language=... -f project=... -f config=...`
+per combination, and logs each attempt to `trigger_log.csv` (skipping
+combinations already logged `ok` on rerun, so it's safe to re-invoke after an
+interruption). Requires `gh` authenticated with the `workflow` scope
+(`gh auth refresh -s workflow`) since it's pushing/dispatching workflow runs.
 
 ```
-gh workflow run phase1-sweep.yml -f language=<java|python|js> -f project=<key> -f config=<Baseline|C|M|D|N>
+python3 trigger_sweep.py                                            # fire all 445
+python3 trigger_sweep.py java:tootallnate_java-websocket:Baseline   # just one, for a smoke test
 ```
 
 Download artifacts afterward and merge into a local
