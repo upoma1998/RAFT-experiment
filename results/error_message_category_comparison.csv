@@ -1,0 +1,8 @@
+message_category,raft_occurrences,raft_pct,baseline_flaky_occurrences,baseline_flaky_pct
+assertion mismatch,123,15.69,135,16.03
+other,580,73.98,697,82.78
+timeout,81,10.33,10,1.19
+
+chi2_test_of_independence_raft_vs_baseline_flaky_categories
+chi2_stat,p_value,dof
+64.6868,8.98327e-15,2
