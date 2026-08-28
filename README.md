@@ -184,6 +184,8 @@ Aggregated category distribution, RAFT-failures vs. baseline-flaky-failures, plu
 
 Numbers below are pulled directly from the CSVs in this folder (post websocket-merge correction).
 
+**A note on methodology before RQ2:** RAFT tests here are identified purely by the raw operational definition you specified — a test is RAFT if it was 100% passing at Baseline and showed both pass and fail outcomes under a constrained config. That's the *only* classification criterion; no significance test is involved in deciding whether a test makes it into `raft_tests.csv`. Fisher's exact test (one-sided) + Benjamini-Hochberg correction is applied afterward, purely as a per-instance confidence annotation (the `fisher_p_greater` / `fisher_q_bh` / `significant_q05` columns) on top of instances already classified as RAFT — it is not the method used to decide RAFT membership, and RQ2 below never used it that way. Worth flagging upfront, though: at only 50 runs/config, most raw RAFT candidates don't clear a strict per-test significance bar — just 10 of the 217 identified instances have `significant_q05=True` (6 under C, 4 under M, 0 under D or N), the exact underpowered-sample effect flagged as a risk when 50 runs was chosen over the paper's 300. Keep that in mind reading the distribution below: it's a map of where raw RAFT candidates cluster, not a list of individually-confirmed-significant findings — treat `significant_q05` as an optional confidence filter if you want the more conservative subset.
+
 ### RQ1 — Does resource constraint make flaky tests happen more frequently?
 
 **Yes, for CPU, memory, and network throttling — not measurably for disk throttling**, using McNemar's paired test (same test, Baseline vs. constrained) on the flaky/not-flaky classification, from `flaky_rate_by_config_summary.csv`:
@@ -204,21 +206,29 @@ One trap to avoid: the raw `mean_fail_rate` column looks like it's saying CPU an
 
 Comparing the same tests under both conditions (the paired subset, which is what `mean_fail_rate_delta_vs_baseline` and the McNemar/Wilcoxon tests already do correctly) tells the true story: Baseline 0.6213% vs. C 0.6554% (paired n=51,392) — *higher* under C, not lower — and Baseline 0.5476% vs. D 0.5495% (paired n=59,676) — flat, consistent with D showing no significant McNemar effect. N has zero dropped tests (throttling bandwidth doesn't crash anything), so its raw comparison (1.03% vs 1.04%) is already apples-to-apples and needs no adjustment. **Rule of thumb for this table: never compare the raw `mean_fail_rate` column across configs directly — compare `mean_fail_rate_delta_vs_baseline`, or the McNemar/Wilcoxon results, which are computed on the paired population and aren't subject to this bias.**
 
-### RQ2 — How many tests become flaky *only* under resource constraint (RAFT tests)?
+### RQ2 — How many tests become flaky *only* under resource constraint (RAFT tests), and how is that distributed across configs, projects, and languages?
 
-Statistics-first attempt: applying Fisher's exact test (one-sided) + Benjamini-Hochberg correction to every candidate RAFT instance (from `raft_tests.csv`), only **10 of 217** test x config instances remain significant at q<0.05 (6 under C, 4 under M, 0 under D or N). That's not a promising signal on its own — with only 50 runs/config, a test that fails e.g. 2/50 times under a constrained config and 0/50 at Baseline doesn't clear a strict multiple-testing bar. This is the exact underpowered-sample effect flagged as a risk when 50 runs was chosen over the paper's 300.
+Using the raw operational definition (baseline always-pass, constrained-config flaky, from `raft_tests.csv`): **217 test x config RAFT instances**, covering **176 unique tests** (some tests are RAFT under more than one config).
 
-Falling back to the raw operational definition you specified (baseline always-pass, constrained-config flaky, no significance filter):
+**By config** — split **M = 91**, **C = 70**, **N = 39**, **D = 17**. Memory pressure is by far the most common trigger of new flakiness, consistent with RQ1's finding that M has the strongest overall effect.
 
-- **217 test x config RAFT instances**, covering **176 unique tests** (some tests are RAFT under more than one config).
-- Split by config: **M = 91**, **C = 70**, **N = 39**, **D = 17**. Memory pressure is by far the most common trigger of new flakiness, consistent with RQ1's finding that M has the strongest overall effect.
-- RAFT tests are concentrated, not evenly spread: only **27 of 85 projects (32%)** have any RAFT tests at all. `raft_summary_by_project.csv`'s top contributors:
+**By project** — concentrated, not evenly spread: only **27 of 85 projects (32%)** have any RAFT tests at all. `raft_summary_by_project.csv`'s top contributors:
   - `pypa-setuptools` (python): 84 unique RAFT tests — one project accounts for ~39% of all RAFT instances found. 82 are flagged under M and 25 under N, but these aren't two separate clusters: 23 of the 25 N-flagged tests are *also* M-flagged. In practice this is essentially one cluster of ~84 memory-sensitive tests, most of which also flake under network throttling.
   - `tootallnate_java-websocket` (java): 14, spread across all four configs (11 C, 6 N, 5 M, 4 D) — the only project where every constrained config triggers some new flakiness, worth prioritizing for the root-cause deep-dive.
   - `orbit_orbit` (java): 5, `activiti_activiti` (java): 3, `apache_incubator-dubbo` (java): 1.
   - The remaining 22 projects with RAFT tests weren't in the top-5 cut but are listed in full in `raft_summary_by_project.csv`.
 
-**Bottom line:** resource-constraint-induced flakiness is real but concentrated — a small minority of projects (and within those, often one memory-sensitive test class) account for most of it, rather than being a diffuse effect spread evenly across the corpus.
+**By language** — RAFT prevalence differs sharply once you normalize by how many projects of each language were even tested (44 java, 20 python, 25 js in the registry):
+
+| Language | RAFT instances | Unique RAFT tests | Projects with &ge;1 RAFT test | Share of that language's projects |
+|---|---|---|---|---|
+| java | 97 | 79 | 21 / 44 | **48%** |
+| js | 13 | 13 | 5 / 25 | 20% |
+| python | 107 | 84 | 1 / 20 | **5%** |
+
+Python has the most raw RAFT instances (107) but that's almost entirely one project (`pypa-setuptools`) — only 1 of 20 Python projects shows any RAFT behavior at all. Java, by contrast, has RAFT tests spread across nearly half its projects (21/44) — a much more diffuse, less single-project-dependent pattern. So "which language is most resource-sensitive" depends entirely on whether you count instances (python wins, driven by one project) or breadth (java wins, by a wide margin).
+
+**Bottom line:** resource-constraint-induced flakiness is real but concentrated along two axes at once — a small minority of projects overall (32%), and within that, a language-level split between "spread across many projects" (java) and "concentrated in a single project" (python) — rather than being a diffuse effect spread evenly across the corpus.
 
 ### RQ3 — Are RAFT tests' error messages the same kind as regular flaky tests' error messages?
 
