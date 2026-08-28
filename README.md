@@ -119,7 +119,7 @@ Per-test significance test: for every test with >=10 valid runs at **both** Base
 | `fisher_q_bh` | Benjamini-Hochberg corrected p-value, across all tests compared for that config |
 | `significant_q05` | `True` if `fisher_q_bh < 0.05` |
 
-### `flaky_rate_by_config_summary.csv` — **answers RQ1/RQ2, broad definition**
+### `flaky_rate_by_config_summary.csv` — **answers RQ1**
 One row per config (Baseline + C/M/D/N), aggregate flakiness comparison.
 
 | Column | Meaning |
@@ -134,7 +134,7 @@ One row per config (Baseline + C/M/D/N), aggregate flakiness comparison.
 | `wilcoxon_stat`, `wilcoxon_p` | Wilcoxon signed-rank test on paired per-test fail-rate deltas (normal approximation) |
 | `mean_fail_rate_delta_vs_baseline` | mean of (config fail_rate - baseline fail_rate) across paired tests |
 
-### `raft_tests.csv` — **answers RQ1/RQ2, strict RAFT definition**
+### `raft_tests.csv` — **answers RQ2**
 Tests that were **completely stable at Baseline** (`n_fail == 0`, i.e. 0% baseline fail rate) but became flaky under a constrained config. This is the literal "RAFT" (Resource-Affected Flaky Test) definition. One row per (test, config) instance.
 
 | Column | Meaning |
@@ -184,28 +184,9 @@ Aggregated category distribution, RAFT-failures vs. baseline-flaky-failures, plu
 
 Numbers below are pulled directly from the CSVs in this folder (post websocket-merge correction).
 
-### RQ1 & RQ2 — Is resource-induced flakiness (RAFT) real, under two different definitions of "flaky"?
+### RQ1 — Does resource constraint make flaky tests happen more frequently?
 
-These two questions turn out to be the same question asked at two different strictness levels, so they're answered together here rather than separately. The dataset supports two distinct definitions of "flaky," and which one you use changes both the answer and how confident you can be in it.
-
-**Definition A — broad / instability.** A test is "flaky under config X" if it shows both pass *and* fail outcomes (0% < fail_rate < 100%) under X, full stop — nothing about what it did at Baseline matters. Under this definition "not flaky" covers two very different baseline states lumped together: always-passing (fail_rate=0%) *and* always-failing (fail_rate=100%, deterministically broken). This is what `flaky_rate_by_config_summary.csv` and its McNemar/Wilcoxon tests measure.
-
-**Definition B — strict / RAFT.** A test only counts if it was *specifically* always-passing at Baseline (fail_rate=0%, the stronger claim) and became flaky under a constrained config. This is the literal "RAFT" definition you originally asked for, and it's a strict subset of Definition A's "newly flaky" set. This is what `raft_tests.csv` measures.
-
-In practice the two nearly coincide — decomposing Definition A's "newly flaky" count shows Definition B's RAFT tests make up 87-100% of it per config:
-
-| Config | Def A "newly flaky" | Def B RAFT (baseline always-pass) | baseline always-**fail** &rarr; flaky | too few baseline runs to classify |
-|---|---|---|---|---|
-| C | 72 | 70 | 2 | 0 |
-| M | 91 | 91 | 0 | 0 |
-| D | 19 | 17 | 2 | 0 |
-| N | 45 | 39 | 0 | 6 |
-
-The small gap is its own finding, currently invisible in both CSVs: 4 tests (2 under C, 2 under D) went from **deterministically broken** at Baseline to flaky under constraint — resource throttling occasionally lets a normally-failing test pass, presumably by perturbing timing/scheduling enough to dodge whatever bug causes the deterministic failure. That's a real, resource-triggered behavior change that Definition B's stricter criteria (which requires a *clean-passing* baseline) misses entirely.
-
-#### Verdict under Definition A (broad instability): valid for C, M, N — not for D
-
-Using McNemar's paired test (same test, Baseline vs. constrained) on the flaky/not-flaky classification, from `flaky_rate_by_config_summary.csv`:
+**Yes, for CPU, memory, and network throttling — not measurably for disk throttling**, using McNemar's paired test (same test, Baseline vs. constrained) on the flaky/not-flaky classification, from `flaky_rate_by_config_summary.csv`:
 
 | Config | Tests present | Flaky | Flaky rate | Paired w/ Baseline | Newly-flaky only | Un-flaky only | McNemar p | Wilcoxon p |
 |---|---|---|---|---|---|---|---|---|
@@ -215,33 +196,29 @@ Using McNemar's paired test (same test, Baseline vs. constrained) on the flaky/n
 | D (disk) | 60,572 | 49 | 0.08% | 60,570 | 19 | 17 | 0.868 (n.s.) | 0.792 (n.s.) |
 | N (network) | 74,261 | 153 | 0.21% | 74,261 | 45 | 19 | **1.78e-03** | 7.84e-11 |
 
-Reading the "newly-flaky vs un-flaky" columns: under CPU throttling, 72 tests became flaky that weren't at Baseline, versus only 18 that stopped being flaky — a 4:1 imbalance, and McNemar's test says that's essentially impossible under the null hypothesis (p=2.3e-08). Memory throttling is the strongest effect (91 vs 15, p=3.2e-13). Network shows the same direction but a smaller, still-significant effect (45 vs 19). **Disk throttling shows no significant effect** (19 vs 17, p=0.87) — essentially a coin flip. So at the aggregate, pooled-across-tens-of-thousands-of-tests level, the answer is a confident **yes for C/M/N, no for D**.
+Reading the "newly-flaky vs un-flaky" columns: under CPU throttling, 72 tests became flaky that weren't at Baseline, versus only 18 that stopped being flaky — a 4:1 imbalance, and McNemar's test says that's essentially impossible under the null hypothesis (p=2.3e-08). Memory throttling is the strongest effect (91 vs 15, p=3.2e-13). Network shows the same direction but a smaller, still-significant effect (45 vs 19). **Disk throttling shows no significant effect** (19 vs 17, p=0.87) — essentially a coin flip.
 
-A second, independent signal points the same way for C/M/D: `n_tests_present` drops sharply (52,306 / 54,854 / 60,572 vs. 74,261 at Baseline and under N) — meaning a meaningful fraction of tests under CPU/memory/disk pressure didn't even produce a clean pass/fail result at all (suites crashing, OOMing, or timing out outright rather than individual tests flaking). That's a resource effect on its own, arguably more severe than flakiness, and it's *not* counted in the flaky-rate numbers above since those require `n_valid >= 2`.
+A second, independent signal points the same way: `n_tests_present` drops sharply under C/M/D (52,306 / 54,854 / 60,572 vs. 74,261 at Baseline and under N) — meaning a meaningful fraction of tests under CPU/memory/disk pressure didn't even produce a clean pass/fail result at all (suites crashing, OOMing, or timing out outright rather than individual tests flaking). That's a resource effect on its own, arguably more severe than flakiness, and it's *not* counted in the flaky-rate numbers above since those require `n_valid >= 2`.
 
 One trap to avoid: the raw `mean_fail_rate` column looks like it's saying CPU and disk throttling *reduce* average failure rates (C: 0.66% vs Baseline's 1.04%; D: 0.55% vs 1.04%) — but that's comparing two *different populations* of tests (52,306 present under C vs. 74,261 at Baseline; 60,572 under D), not the same tests twice, and it's misleading. The tests that got dropped entirely under C/D (timed out before producing any result — see above) were not a random sample: their Baseline failure rate averaged **2.06%** (C-dropped, n=21,250) and **3.32%** (D-dropped, n=12,966) — 3-6x higher than the tests that survived to produce data (0.62% and 0.55% respectively). Excluding the shakier, heavier tests from the C/D population is what drags their raw averages down, not CPU/disk throttling making anything more reliable.
 
 Comparing the same tests under both conditions (the paired subset, which is what `mean_fail_rate_delta_vs_baseline` and the McNemar/Wilcoxon tests already do correctly) tells the true story: Baseline 0.6213% vs. C 0.6554% (paired n=51,392) — *higher* under C, not lower — and Baseline 0.5476% vs. D 0.5495% (paired n=59,676) — flat, consistent with D showing no significant McNemar effect. N has zero dropped tests (throttling bandwidth doesn't crash anything), so its raw comparison (1.03% vs 1.04%) is already apples-to-apples and needs no adjustment. **Rule of thumb for this table: never compare the raw `mean_fail_rate` column across configs directly — compare `mean_fail_rate_delta_vs_baseline`, or the McNemar/Wilcoxon results, which are computed on the paired population and aren't subject to this bias.**
 
-#### Verdict under Definition B (strict RAFT): real but weakly confirmed at the per-test level, and concentrated
+### RQ2 — How many tests become flaky *only* under resource constraint (RAFT tests)?
 
 Statistics-first attempt: applying Fisher's exact test (one-sided) + Benjamini-Hochberg correction to every candidate RAFT instance (from `raft_tests.csv`), only **10 of 217** test x config instances remain significant at q<0.05 (6 under C, 4 under M, 0 under D or N). That's not a promising signal on its own — with only 50 runs/config, a test that fails e.g. 2/50 times under a constrained config and 0/50 at Baseline doesn't clear a strict multiple-testing bar. This is the exact underpowered-sample effect flagged as a risk when 50 runs was chosen over the paper's 300.
 
 Falling back to the raw operational definition you specified (baseline always-pass, constrained-config flaky, no significance filter):
 
 - **217 test x config RAFT instances**, covering **176 unique tests** (some tests are RAFT under more than one config).
-- Split by config: **M = 91**, **C = 70**, **N = 39**, **D = 17**. Memory pressure is by far the most common trigger of new flakiness, consistent with the Definition-A finding that M has the strongest overall effect.
+- Split by config: **M = 91**, **C = 70**, **N = 39**, **D = 17**. Memory pressure is by far the most common trigger of new flakiness, consistent with RQ1's finding that M has the strongest overall effect.
 - RAFT tests are concentrated, not evenly spread: only **27 of 85 projects (32%)** have any RAFT tests at all. `raft_summary_by_project.csv`'s top contributors:
   - `pypa-setuptools` (python): 84 unique RAFT tests — one project accounts for ~39% of all RAFT instances found. 82 are flagged under M and 25 under N, but these aren't two separate clusters: 23 of the 25 N-flagged tests are *also* M-flagged. In practice this is essentially one cluster of ~84 memory-sensitive tests, most of which also flake under network throttling.
   - `tootallnate_java-websocket` (java): 14, spread across all four configs (11 C, 6 N, 5 M, 4 D) — the only project where every constrained config triggers some new flakiness, worth prioritizing for the root-cause deep-dive.
   - `orbit_orbit` (java): 5, `activiti_activiti` (java): 3, `apache_incubator-dubbo` (java): 1.
   - The remaining 22 projects with RAFT tests weren't in the top-5 cut but are listed in full in `raft_summary_by_project.csv`.
 
-**Bottom line for Definition B:** resource-constraint-induced flakiness is real but concentrated — a small minority of projects (and within those, often one memory-sensitive test class) account for most of it, rather than being a diffuse effect spread evenly across the corpus.
-
-#### Reconciling the two verdicts
-
-At the **aggregate/population level** (Definition A, pooling tens of thousands of tests), the evidence that resource constraint causes flakiness is strong and statistically robust for C/M/N. At the **individual-test level** (Definition B, asking "is *this specific test* a confirmed RAFT test"), the evidence is much thinner — only 10 of 217 raw candidates survive correction — because 50 runs/config just isn't enough samples to confidently call a single test's behavior change significant. Both things are true simultaneously: the phenomenon is real and detectable in aggregate, but pointing to a specific test and asserting "this one is definitely resource-affected" is only safely defensible for that short list of 10 (plus the projects — `pypa-setuptools` and `tootallnate_java-websocket` — where the raw counts are large enough that concentration alone is suggestive even without per-test significance).
+**Bottom line:** resource-constraint-induced flakiness is real but concentrated — a small minority of projects (and within those, often one memory-sensitive test class) account for most of it, rather than being a diffuse effect spread evenly across the corpus.
 
 ### RQ3 — Are RAFT tests' error messages the same kind as regular flaky tests' error messages?
 
