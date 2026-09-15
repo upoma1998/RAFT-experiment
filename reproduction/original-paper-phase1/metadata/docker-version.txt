@@ -1,0 +1,10 @@
+Cannot connect to the Docker daemon at unix:///Users/upoma/.docker/run/docker.sock. Is the docker daemon running?
+Client:
+ Cloud integration: v1.0.35+desktop.5
+ Version:           24.0.6
+ API version:       1.43
+ Go version:        go1.20.7
+ Git commit:        ed223bc
+ Built:             Mon Sep  4 12:28:49 2023
+ OS/Arch:           darwin/arm64
+ Context:           desktop-linux

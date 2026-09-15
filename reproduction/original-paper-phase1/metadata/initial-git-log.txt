@@ -1,0 +1,12 @@
+b664e82 RQ2: separate raw-definition classification from Fisher/BH confidence check
+bf30361 Revert "Merge RQ1 and RQ2 into one section: two definitions of flaky, one verdict each"
+f0e9739 Merge RQ1 and RQ2 into one section: two definitions of flaky, one verdict each
+f588b5f Fix survivorship-bias reasoning error in RQ1, tighten RQ2/RQ3 claims
+4c4698f Add analysis results and post-collection pipeline scripts; rewrite README
+571dcc5 Add trigger_sweep.py to drive the full 445-combination sweep
+ca23c2b Replace per-language workflows with a single tiny-batch sweep workflow
+f39c049 Add chunked 50-run workflow for websocket + logback, run-offset support
+c3ebd25 RAFT Summary
+9c319c0 Fix hardcoded disk device path; scope Phase 1 to C,M,D,N configs only
+a11c014 Fix Java multi-generation image support and critical testcase regex bug
+158e9fc Add Phase 1 RAFT reproduction runner + GH Actions matrix workflows

@@ -1,0 +1,33 @@
+Client:
+ Version:    24.0.6
+ Context:    desktop-linux
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.11.2-desktop.5
+    Path:     /Users/upoma/.docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  v2.23.0-desktop.1
+    Path:     /Users/upoma/.docker/cli-plugins/docker-compose
+  dev: Docker Dev Environments (Docker Inc.)
+    Version:  v0.1.0
+    Path:     /Users/upoma/.docker/cli-plugins/docker-dev
+  extension: Manages Docker extensions (Docker Inc.)
+    Version:  v0.2.20
+    Path:     /Users/upoma/.docker/cli-plugins/docker-extension
+  init: Creates Docker-related starter files for your project (Docker Inc.)
+    Version:  v0.1.0-beta.9
+    Path:     /Users/upoma/.docker/cli-plugins/docker-init
+  sbom: View the packaged-based Software Bill Of Materials (SBOM) for an image (Anchore Inc.)
+    Version:  0.6.0
+    Path:     /Users/upoma/.docker/cli-plugins/docker-sbom
+  scan: Docker Scan (Docker Inc.)
+    Version:  v0.26.0
+    Path:     /Users/upoma/.docker/cli-plugins/docker-scan
+  scout: Docker Scout (Docker Inc.)
+    Version:  v1.0.9
+    Path:     /Users/upoma/.docker/cli-plugins/docker-scout
+
+Server:
+ERROR: Cannot connect to the Docker daemon at unix:///Users/upoma/.docker/run/docker.sock. Is the docker daemon running?
+errors pretty printing info
