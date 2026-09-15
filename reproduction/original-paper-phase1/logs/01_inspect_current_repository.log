@@ -1,0 +1,501 @@
++ echo ============================================================
+============================================================
++ echo '1. CURRENT DATE'
+1. CURRENT DATE
++ echo ============================================================
+============================================================
++ date
+Tue Sep 15 17:19:27 EDT 2026
++ echo
+
++ echo ============================================================
+============================================================
++ echo '2. CURRENT DIRECTORY'
+2. CURRENT DIRECTORY
++ echo ============================================================
+============================================================
++ pwd
+/Users/upoma/RAFT-experiment
++ echo
+
++ echo ============================================================
+============================================================
++ echo '3. CURRENT GIT BRANCH'
+3. CURRENT GIT BRANCH
++ echo ============================================================
+============================================================
++ git branch --show-current
+reproduce-original-paper-phase1
++ echo
+
++ echo ============================================================
+============================================================
++ echo '4. GIT STATUS'
+4. GIT STATUS
++ echo ============================================================
+============================================================
++ git status
+On branch reproduce-original-paper-phase1
+Your branch is up to date with 'origin/reproduce-original-paper-phase1'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	reproduction/original-paper-phase1/commands/01_inspect_current_repository.sh
+	reproduction/original-paper-phase1/logs/
+
+nothing added to commit but untracked files present (use "git add" to track)
++ echo
+
++ echo ============================================================
+============================================================
++ echo '5. CURRENT COMMIT'
+5. CURRENT COMMIT
++ echo ============================================================
+============================================================
++ git rev-parse HEAD
+cd25134851470e62044d0405646cd2e9cc9d5876
++ echo
+
++ echo ============================================================
+============================================================
++ echo '6. GIT REMOTES'
+6. GIT REMOTES
++ echo ============================================================
+============================================================
++ git remote -v
+origin	https://github.com/upoma1998/RAFT-experiment.git (fetch)
+origin	https://github.com/upoma1998/RAFT-experiment.git (push)
+upstream	https://github.com/jiajuwang/RAFT-experiment.git (fetch)
+upstream	DISABLED (push)
++ echo
+
++ echo ============================================================
+============================================================
++ echo '7. RECENT GIT HISTORY'
+7. RECENT GIT HISTORY
++ echo ============================================================
+============================================================
++ git log --oneline --decorate -10
+cd25134 (HEAD -> reproduce-original-paper-phase1, origin/reproduce-original-paper-phase1) Add provenance for original RAFT Phase I reproduction
+b664e82 (origin/main, origin/HEAD, main) RQ2: separate raw-definition classification from Fisher/BH confidence check
+bf30361 Revert "Merge RQ1 and RQ2 into one section: two definitions of flaky, one verdict each"
+f0e9739 Merge RQ1 and RQ2 into one section: two definitions of flaky, one verdict each
+f588b5f Fix survivorship-bias reasoning error in RQ1, tighten RQ2/RQ3 claims
+4c4698f Add analysis results and post-collection pipeline scripts; rewrite README
+571dcc5 Add trigger_sweep.py to drive the full 445-combination sweep
+ca23c2b Replace per-language workflows with a single tiny-batch sweep workflow
+f39c049 Add chunked 50-run workflow for websocket + logback, run-offset support
+c3ebd25 RAFT Summary
++ echo
+
++ echo ============================================================
+============================================================
++ echo '8. REPOSITORY TOP-LEVEL FILES'
+8. REPOSITORY TOP-LEVEL FILES
++ echo ============================================================
+============================================================
++ find . -maxdepth 2 -type f '!' -path './.git/*'
++ sort
+./.gitignore
+./README.md
+./phase1_registry.json
+./phase1_registry.py
+./phase1_runner.py
+./results/error_message_category_comparison.csv
+./results/error_messages_baseline_flaky.csv
+./results/error_messages_raft.csv
+./results/flaky_rate_by_config_summary.csv
+./results/per_test_config_summary.csv
+./results/raft_summary_by_project.csv
+./results/raft_tests.csv
+./results/test_level_baseline_vs_config_fisher.csv
+./scripts/analyze.py
+./scripts/download_artifacts_seq.sh
+./scripts/fix_websocket_dup.py
+./scripts/merge_data.py
+./scripts/stats_lite.py
+./trigger_sweep.py
++ echo
+
++ echo ============================================================
+============================================================
++ echo '9. RUNNER HELP'
+9. RUNNER HELP
++ echo ============================================================
+============================================================
++ python3 phase1_runner.py --help
+usage: phase1_runner.py [-h] [--only {java,python,js}] [--project PROJECT]
+                        [--configs CONFIGS] [--runs RUNS]
+                        [--run-offset RUN_OFFSET] [--max-minutes MAX_MINUTES]
+
+options:
+  -h, --help            show this help message and exit
+  --only {java,python,js}
+  --project PROJECT
+  --configs CONFIGS
+  --runs RUNS
+  --run-offset RUN_OFFSET
+                        add this to every recorded run_index; lets multiple
+                        invocations append non-overlapping runs (e.g. --runs
+                        10 --run-offset 20) to the same CSV
+  --max-minutes MAX_MINUTES
+                        wall-clock budget for the whole invocation; stop
+                        gracefully before it elapses
++ echo
+
++ echo ============================================================
+============================================================
++ echo '10. CURRENT DEFAULT RUN COUNT'
+10. CURRENT DEFAULT RUN COUNT
++ echo ============================================================
+============================================================
++ grep -n RUNS_PER_CONFIG_DEFAULT phase1_runner.py
+16:RUNS_PER_CONFIG_DEFAULT = 10
+412:    ap.add_argument("--runs", type=int, default=RUNS_PER_CONFIG_DEFAULT)
++ echo
+
++ echo ============================================================
+============================================================
++ echo '11. CURRENT CONFIGURATION DEFINITIONS'
+11. CURRENT CONFIGURATION DEFINITIONS
++ echo ============================================================
+============================================================
++ grep -n -A80 '^CONFIGS' phase1_runner.py
+41:CONFIGS = {
+42-    "Baseline": dict(cpus=4,    mem="14g",  disk=None,       net=None),
+43-    "C":        dict(cpus=0.1,  mem=None,   disk=None,       net=None),
+44-    "M":        dict(cpus=None, mem="512m", disk=None,       net=None),
+45-    "D":        dict(cpus=None, mem=None,   disk=(50, 100),  net=None),
+46-    "N":        dict(cpus=None, mem=None,   disk=None,       net=(1500, 512)),
+47-    "CM":       dict(cpus=0.1,  mem="512m", disk=None,       net=None),
+48-    "CN":       dict(cpus=0.1,  mem=None,   disk=None,       net=(1500, 512)),
+49-    "MN":       dict(cpus=None, mem="512m", disk=None,       net=(1500, 512)),
+50-    "CD":       dict(cpus=0.1,  mem=None,   disk=(50, 100),  net=None),
+51-    "MD":       dict(cpus=None, mem="512m", disk=(50, 100),  net=None),
+52-    "DN":       dict(cpus=None, mem=None,   disk=(50, 100),  net=(1500, 512)),
+53-    "CMN":      dict(cpus=0.1,  mem="512m", disk=None,       net=(1500, 512)),
+54-    "CMD":      dict(cpus=0.1,  mem="512m", disk=(50, 100),  net=None),
+55-    "CDN":      dict(cpus=0.1,  mem=None,   disk=(50, 100),  net=(1500, 512)),
+56-    "MDN":      dict(cpus=None, mem="512m", disk=(50, 100),  net=(1500, 512)),
+57-    "CMDN":     dict(cpus=0.1,  mem="512m", disk=(50, 100),  net=(1500, 512)),
+58-}
+59-
+60-TESTCASE_RE = re.compile(
+61-    r'<testcase\b([^>]*?)(?:/>|>(.*?)</testcase>)', re.S)
+62-ATTR_RE = re.compile(r'(\w+)="([^"]*)"')
+63-MSG_RE = re.compile(r'<(failure|error)[^>]*message="([^"]*)"', re.S)
+64-
+65-
+66-def log(msg):
+67-    print(f"[{time.strftime('%H:%M:%S')}] {msg}", flush=True)
+68-
+69-
+70-def sh(cmd, timeout=RUN_TIMEOUT_SEC, input_data=None):
+71-    return subprocess.run(cmd, shell=isinstance(cmd, str), capture_output=True,
+72-                           text=True, timeout=timeout, input=input_data)
+73-
+74-
+75-def docker_flags(cfg):
+76-    flags = []
+77-    if cfg["cpus"] is not None:
+78-        flags += ["--cpus", str(cfg["cpus"])]
+79-    if cfg["mem"] is not None:
+80-        flags += ["--memory", cfg["mem"], "--memory-swap", cfg["mem"]]
+81-    if cfg["disk"] is not None:
+82-        r, w = cfg["disk"]
+83-        flags += ["--device-read-bps", f"{DOCKER_DEVICE}:{r}kb",
+84-                  "--device-write-bps", f"{DOCKER_DEVICE}:{w}kb"]
+85-    return flags
+86-
+87-
+88-NET_PRELUDE = """
+89-if command -v tc >/dev/null 2>&1; then
+90-  tc qdisc add dev eth0 root tbf rate {up}kbit burst 32kbit latency 400ms 2>/dev/null
+91-  tc qdisc add dev eth0 handle ffff: ingress 2>/dev/null
+92-  tc filter add dev eth0 parent ffff: u32 match u32 0 0 police rate {down}kbit burst 10k drop flowid :1 2>/dev/null
+93-  echo NET_THROTTLE_APPLIED
+94-else
+95-  echo NET_THROTTLE_UNAVAILABLE
+96-fi
+97-"""
+98-
+99-
+100-def ensure_tc_image(image):
+101-    """Build (once) and cache a derived image with iproute2 + NET_ADMIN-ready for tc."""
+102-    derived = image.replace(":", "__") + "-tc"
+103-    check = sh(["docker", "image", "inspect", derived], timeout=30)
+104-    if check.returncode == 0:
+105-        return derived
+106-    log(f"  building tc-enabled derived image for {image} ...")
+107-    r = sh(["docker", "run", "--name", f"tcbuild-{os.getpid()}", image,
+108-            "bash", "-c",
+109-            "(apt-get update -qq && apt-get install -y -qq iproute2) "
+110-            "|| (apk add -q iproute2-tc) || true"],
+111-           timeout=300)
+112-    commit = sh(["docker", "commit", f"tcbuild-{os.getpid()}", derived], timeout=120)
+113-    sh(["docker", "rm", "-f", f"tcbuild-{os.getpid()}"], timeout=60)
+114-    if commit.returncode != 0:
+115-        log(f"  WARNING: failed to build tc image for {image}: {commit.stderr[:300]}")
+116-        return image  # fall back, network throttle will be skipped
+117-    return derived
+118-
+119-
+120-def parse_junit_blob(xml_blob):
+121-    """Parse one or more concatenated JUnit-style XML docs into (classname,name,status,message) tuples."""
++ echo
+
++ echo ============================================================
+============================================================
++ echo '12. CURRENT COMMAND-LINE ARGUMENTS'
+12. CURRENT COMMAND-LINE ARGUMENTS
++ echo ============================================================
+============================================================
++ grep -n -A35 ArgumentParser phase1_runner.py
+408:    ap = argparse.ArgumentParser()
+409-    ap.add_argument("--only", choices=["java", "python", "js"])
+410-    ap.add_argument("--project")
+411-    ap.add_argument("--configs", default=",".join(CONFIGS.keys()))
+412-    ap.add_argument("--runs", type=int, default=RUNS_PER_CONFIG_DEFAULT)
+413-    ap.add_argument("--run-offset", type=int, default=0,
+414-                     help="add this to every recorded run_index; lets multiple invocations "
+415-                          "append non-overlapping runs (e.g. --runs 10 --run-offset 20) to the same CSV")
+416-    ap.add_argument("--max-minutes", type=float, default=None,
+417-                     help="wall-clock budget for the whole invocation; stop gracefully before it elapses")
+418-    args = ap.parse_args()
+419-    configs = args.configs.split(",")
+420-    for c in configs:
+421-        assert c in CONFIGS, f"unknown config {c}"
+422-    deadline = time.time() + args.max_minutes * 60 if args.max_minutes else None
+423-
+424-    langs = [args.only] if args.only else ["java", "python", "js"]
+425-    for lang in langs:
+426-        projects = REGISTRY[lang]
+427-        keys = args.project.split(",") if args.project else sorted(projects.keys())
+428-        for key in keys:
+429-            if deadline and time.time() > deadline:
+430-                log(f"GLOBAL DEADLINE reached, stopping before {lang}/{key}")
+431-                break
+432-            if key not in projects:
+433-                log(f"SKIP unknown project {key} for {lang}")
+434-                continue
+435-            image = f"jonbell/raft:{projects[key]}"
+436-            log(f"=== {lang}/{key} ({image}) ===")
+437-            writer = ResultWriter(lang, key)
+438-            try:
+439-                r = sh(["docker", "pull", image], timeout=1200)
+440-                if r.returncode != 0:
+441-                    writer.write_error("*", "*", "PULL_FAILED", r.stderr[-2000:])
+442-                    log(f"  PULL FAILED: {r.stderr[-300:]}")
+443-                    writer.close()
++ echo
+
++ echo ============================================================
+============================================================
++ echo '13. CURRENT REGISTRY COUNTS'
+13. CURRENT REGISTRY COUNTS
++ echo ============================================================
+============================================================
++ python3 -
+java: 44 projects
+js: 25 projects
+python: 20 projects
+TOTAL: 89 projects
++ echo
+
++ echo ============================================================
+============================================================
++ echo '14. CURRENT JAVA PROJECT KEYS'
+14. CURRENT JAVA PROJECT KEYS
++ echo ============================================================
+============================================================
++ python3 -
+activiti_activiti
+alibaba.fastjson
+apache.incubator-dubbo-737f7a7_dubbo-remoting.dubbo-remoting-netty
+apache.incubator-dubbo-737f7a7_dubbo-rpc.dubbo-rpc-dubbo
+apache_ambari
+apache_commons-exec
+apache_hbase
+apache_httpcore
+apache_incubator-dubbo
+codingchili.excelastic
+davidmoten.rxjava2-extras
+elasticjob.elastic-job-lite-b022898_elastic-job-lite-core
+elasticjob_elastic-job-lite
+espertechinc.esper-590fa9c_examples.rfidassetzone
+feroult.yawp-b3bcf9c_yawp-testing.yawp-testing-appengine
+flaxsearch.luwak-c27ec08_luwak
+fluent.fluent-logger-java
+hector-client_hector
+javadelight.delight-nashorn-sandbox
+jknack_handlebars.java
+joel-costigliola_assertj-core
+kagkarlsson.db-scheduler
+kevinsawicki_http-request
+looly.hutool-91565d0_hutool-cron
+nationalsecurityagency.timely-3a8cbd3_server
+ninjaframework_ninja
+orbit.orbit-c4904af_actors.runtime
+orbit_orbit
+oryxproject.oryx-72ae4bb_framework.oryx-common
+qos-ch_logback
+spinn3r.noxy-d53a494_noxy-discovery-zookeeper
+spring-projects_spring-boot
+square.retrofit-ae28c3d_retrofit
+square.retrofit-ae28c3d_retrofit-adapters.rxjava
+square_okhttp
+tootallnate.java-websocket
+tootallnate_java-websocket
+undertow-io_undertow
+wildfly_wildfly
+wro4j.wro4j-185ab60_wro4j-extensions
+wro4j_wro4j
+wso2.carbon-apimgt-a82213e_analyzer-modules.org.wso2.carbon.apimgt.throttling.siddhi.extension
+zalando.riptide-8277e11_riptide-failsafe
+zxing_zxing
++ echo
+
++ echo ============================================================
+============================================================
++ echo '15. CURRENT JAVASCRIPT PROJECT KEYS'
+15. CURRENT JAVASCRIPT PROJECT KEYS
++ echo ============================================================
+============================================================
++ python3 -
+2fd-graphdoc
+actions-javascript-action
+akiran-react-slick
+antvis-ava
+apollographql-apollo-cache-persist
+apollographql-apollo-client-devtools
+arqex-react-datetime
+atomiks-tippyjs-react
+auth0-lock
+aws-actions-configure-aws-credentials
+babel-preset-modules
+badges-shields
+bubenshchykov-ngrok
+clarus-redux-ship
+cyrilwanner-next-compose-plugins
+ds300-derivablejs
+emotion-js-facepaint
+facebook-react-native
+icedfrisby-icedfrisby
+jsonresume-resume-cli
+lukeraymonddowning-whenipress
+pixielabs-cavy
+reacttraining-react-stdio
+twilio-twilio-video-app-react
+zeke-semantic-pull-requests
++ echo
+
++ echo ============================================================
+============================================================
++ echo '16. CURRENT PYTHON PROJECT KEYS'
+16. CURRENT PYTHON PROJECT KEYS
++ echo ============================================================
+============================================================
++ python3 -
+celery-celery
+celery-kombu
+conan-io-conan
+delgan-loguru
+encode-django-rest-framework
+facebookresearch-hydra
+flexget-flexget
+fonttools-fonttools
+graphql-python-graphene
+ipython-ipython
+mitmproxy-mitmproxy
+mwaskom-seaborn
+prefecthq-prefect
+psf-requests
+pygithub-pygithub
+pylons-pyramid
+pypa-setuptools
+python-pillow-pillow
+spesmilo-electrum
+sunpy-sunpy
++ echo
+
++ echo ============================================================
+============================================================
++ echo '17. EXISTING RESULT FILES'
+17. EXISTING RESULT FILES
++ echo ============================================================
+============================================================
++ ls -lh results
+total 163864
+-rw-r--r--  1 upoma  staff   292B Sep 15 16:40 error_message_category_comparison.csv
+-rw-r--r--  1 upoma  staff    39K Sep 15 16:40 error_messages_baseline_flaky.csv
+-rw-r--r--  1 upoma  staff   129K Sep 15 16:40 error_messages_raft.csv
+-rw-r--r--  1 upoma  staff   598B Sep 15 16:40 flaky_rate_by_config_summary.csv
+-rw-r--r--  1 upoma  staff    45M Sep 15 16:40 per_test_config_summary.csv
+-rw-r--r--  1 upoma  staff   3.9K Sep 15 16:40 raft_summary_by_project.csv
+-rw-r--r--  1 upoma  staff    31K Sep 15 16:40 raft_tests.csv
+-rw-r--r--  1 upoma  staff    35M Sep 15 16:40 test_level_baseline_vs_config_fisher.csv
++ echo
+
++ echo ============================================================
+============================================================
++ echo '18. EXISTING GITHUB ACTION WORKFLOWS'
+18. EXISTING GITHUB ACTION WORKFLOWS
++ echo ============================================================
+============================================================
++ find .github/workflows -maxdepth 1 -type f -print -exec sh -c 'echo "--- $1 ---"; sed -n "1,220p" "$1"' _ '{}' ';'
+.github/workflows/phase1-sweep.yml
+--- .github/workflows/phase1-sweep.yml ---
+name: Phase 1 - Sweep (one project x one config, 5-run batches)
+
+on:
+  workflow_dispatch:
+    inputs:
+      language:
+        description: "project language"
+        type: choice
+        options: [java, python, js]
+        required: true
+      project:
+        description: "registry project key (see phase1_registry.json)"
+        required: true
+      config:
+        description: "throttling config"
+        type: choice
+        options: [Baseline, C, M, D, N]
+        required: true
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        offset: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run 5 runs (offset ${{ matrix.offset }})
+        run: |
+          python3 phase1_runner.py --only "${{ inputs.language }}" --project "${{ inputs.project }}" \
+            --configs "${{ inputs.config }}" --runs 5 --run-offset ${{ matrix.offset }}
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.language }}-${{ inputs.project }}-${{ inputs.config }}-offset${{ matrix.offset }}
+          path: |
+            phase1-results/${{ inputs.language }}/results/${{ inputs.project }}.csv
+            phase1-results/${{ inputs.language }}/errors/${{ inputs.project }}.log
+          if-no-files-found: warn
+          retention-days: 14
++ echo
+
++ echo ============================================================
+============================================================
++ echo 'INSPECTION COMPLETE'
+INSPECTION COMPLETE
++ echo ============================================================
+============================================================
