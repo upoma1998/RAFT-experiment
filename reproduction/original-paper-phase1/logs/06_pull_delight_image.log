@@ -1,0 +1,44 @@
+javadelight.delight-nashorn-sandbox-da35edc_dot-latest: Pulling from jonbell/raft
+feac53061382: Pulling fs layer
+46f79a1e7ca3: Pulling fs layer
+6c229cb526bd: Pulling fs layer
+daf4a5e6ae08: Pulling fs layer
+c7ac26c2f422: Pulling fs layer
+ee0e8c2a2b1e: Pulling fs layer
+41810138df5c: Pulling fs layer
+cf1908ee97d6: Pulling fs layer
+ee0e8c2a2b1e: Waiting
+41810138df5c: Waiting
+cf1908ee97d6: Waiting
+daf4a5e6ae08: Waiting
+c7ac26c2f422: Waiting
+6c229cb526bd: Verifying Checksum
+6c229cb526bd: Download complete
+feac53061382: Verifying Checksum
+feac53061382: Download complete
+daf4a5e6ae08: Verifying Checksum
+daf4a5e6ae08: Download complete
+ee0e8c2a2b1e: Verifying Checksum
+ee0e8c2a2b1e: Download complete
+feac53061382: Pull complete
+41810138df5c: Verifying Checksum
+41810138df5c: Download complete
+cf1908ee97d6: Verifying Checksum
+cf1908ee97d6: Download complete
+c7ac26c2f422: Verifying Checksum
+c7ac26c2f422: Download complete
+46f79a1e7ca3: Verifying Checksum
+46f79a1e7ca3: Download complete
+46f79a1e7ca3: Pull complete
+6c229cb526bd: Pull complete
+daf4a5e6ae08: Pull complete
+c7ac26c2f422: Pull complete
+ee0e8c2a2b1e: Pull complete
+41810138df5c: Pull complete
+cf1908ee97d6: Pull complete
+Digest: sha256:a9f7afc684e7cfa162f449a3d4c75d62dfe300c587e9259c1a0deb5c835d1c92
+Status: Downloaded newer image for jonbell/raft:javadelight.delight-nashorn-sandbox-da35edc_dot-latest
+docker.io/jonbell/raft:javadelight.delight-nashorn-sandbox-da35edc_dot-latest
+
+What's Next?
+  View a summary of image vulnerabilities and recommendations → docker scout quickview jonbell/raft:javadelight.delight-nashorn-sandbox-da35edc_dot-latest

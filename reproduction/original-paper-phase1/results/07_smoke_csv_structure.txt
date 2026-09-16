@@ -1,0 +1,17 @@
+FILE
+reproduction/original-paper-phase1/results/raw/java/results/javadelight.delight-nashorn-sandbox.csv
+
+COLUMNS
+['project', 'config', 'run_index', 'classname', 'testname', 'status', 'message']
+
+NUMBER OF CSV ROWS
+1
+
+FIRST 5 ROWS
+{'project': 'javadelight.delight-nashorn-sandbox', 'config': 'M', 'run_index': '1', 'classname': 'delight.nashornsandbox.internal.ThreadMonitorTest', 'testname': 'when_run_and_threadToMonitor_set_then_do_not_wait', 'status': 'pass', 'message': ''}
+
+COUNTS FOR config
+1	M
+
+COUNTS FOR status
+1	pass

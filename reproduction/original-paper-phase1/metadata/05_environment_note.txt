@@ -1,0 +1,15 @@
+Current local Docker environment:
+
+- Platform: Docker Desktop on macOS
+- Docker VM architecture: aarch64
+- Docker CPUs: 8
+- Docker total memory: approximately 3.835 GiB
+
+The original RAFT paper reports a base experimental machine with:
+- 4 CPU cores
+- 16 GiB RAM
+
+Therefore, the current local Docker Desktop environment is suitable for
+pipeline/debugging tests only and must not be reported as a faithful
+4-CPU/16-GiB reproduction until Docker/host resources are adjusted or the
+experiment is moved to an appropriate Linux machine.

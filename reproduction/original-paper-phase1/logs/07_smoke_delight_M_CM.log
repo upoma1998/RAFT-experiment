@@ -1,0 +1,28 @@
++ echo ==============================================
+==============================================
++ echo 'RAFT ORIGINAL-PAPER LOCAL SMOKE EXPERIMENT'
+RAFT ORIGINAL-PAPER LOCAL SMOKE EXPERIMENT
++ echo 'Project: javadelight.delight-nashorn-sandbox'
+Project: javadelight.delight-nashorn-sandbox
++ echo 'Configurations: M, CM'
+Configurations: M, CM
++ echo 'Runs per configuration: 3'
+Runs per configuration: 3
++ echo ==============================================
+==============================================
++ date
+Tue Sep 15 23:57:31 EDT 2026
++ python3 original_paper_phase1_runner.py --only java --project javadelight.delight-nashorn-sandbox --configs M,CM --runs 3
+[23:57:32] === java/javadelight.delight-nashorn-sandbox (jonbell/raft:javadelight.delight-nashorn-sandbox-da35edc_dot-latest) ===
+[23:57:35]   java cmd (zsh): MVNOPTIONS="-Ddependency-check.skip=true -Dmaven.repo.local=/home/throttling/deps -Dgpg.skip=true -DfailIfNoTests=false -Dskip.installnodenpm -Dskip.npm -Dskip....
+[23:57:57]   [javadelight.delight-nashorn-sandbox] config M: done (3 runs parsed)
+[00:18:14]   [javadelight.delight-nashorn-sandbox] config CM: done (3 runs parsed)
+[00:18:14] ALL DONE
++ date
+Wed Sep 16 00:18:14 EDT 2026
++ echo ==============================================
+==============================================
++ echo 'EXPERIMENT FINISHED'
+EXPERIMENT FINISHED
++ echo ==============================================
+==============================================

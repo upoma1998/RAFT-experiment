@@ -1,0 +1,93 @@
++ echo ============================================================
+============================================================
++ echo 'PATCHING RUNNER TO MATCH ORIGINAL RAFT PHASE I'
+PATCHING RUNNER TO MATCH ORIGINAL RAFT PHASE I
++ echo ============================================================
+============================================================
++ python3 -
+Using original_paper_phase1_registry.json
+
+Successfully patched: original_paper_phase1_runner.py
++ echo
+
++ echo ============================================================
+============================================================
++ echo 'VERIFY RUN COUNT'
+VERIFY RUN COUNT
++ echo ============================================================
+============================================================
++ grep -n RUNS_PER_CONFIG_DEFAULT original_paper_phase1_runner.py
+16:RUNS_PER_CONFIG_DEFAULT = 300
+412:    ap.add_argument("--runs", type=int, default=RUNS_PER_CONFIG_DEFAULT)
++ echo
+
++ echo ============================================================
+============================================================
++ echo 'VERIFY RESULTS DIRECTORY'
+VERIFY RESULTS DIRECTORY
++ echo ============================================================
+============================================================
++ grep -n RESULTS_ROOT original_paper_phase1_runner.py
++ head
+13:RESULTS_ROOT = ROOT / "reproduction/original-paper-phase1/results/raw"
+147:        results_dir = RESULTS_ROOT / lang / "results"
+148:        errors_dir = RESULTS_ROOT / lang / "errors"
+301:        results_host = RESULTS_ROOT / "python" / "_tmp" / project_key / cfg_name
+368:            results_host = RESULTS_ROOT / "js" / "_tmp" / project_key / cfg_name / str(run_idx)
++ echo
+
++ echo ============================================================
+============================================================
++ echo 'VERIFY REGISTRY'
+VERIFY REGISTRY
++ echo ============================================================
+============================================================
++ grep -n phase1_registry original_paper_phase1_runner.py
+14:REGISTRY = json.load(open(ROOT / "original_paper_phase1_registry.json"))
++ echo
+
++ echo ============================================================
+============================================================
++ echo 'VERIFY CONFIGURATIONS'
+VERIFY CONFIGURATIONS
++ echo ============================================================
+============================================================
++ grep -n -A18 '^CONFIGS =' original_paper_phase1_runner.py
+41:CONFIGS = {
+42-    "Baseline": dict(cpus=4,   mem="16g",  disk=None,      net=None),
+43-    "C":        dict(cpus=0.1, mem="16g",  disk=None,      net=None),
+44-    "M":        dict(cpus=4,   mem="512m", disk=None,      net=None),
+45-    "D":        dict(cpus=4,   mem="16g",  disk=(50, 100), net=None),
+46-    "N":        dict(cpus=4,   mem="16g",  disk=None,      net=(1500, 512)),
+47-    "CM":       dict(cpus=0.1, mem="512m", disk=None,      net=None),
+48-    "CN":       dict(cpus=0.1, mem="16g",  disk=None,      net=(1500, 512)),
+49-    "MN":       dict(cpus=4,   mem="512m", disk=None,      net=(1500, 512)),
+50-    "CD":       dict(cpus=0.1, mem="16g",  disk=(50, 100), net=None),
+51-    "MD":       dict(cpus=4,   mem="512m", disk=(50, 100), net=None),
+52-    "DN":       dict(cpus=4,   mem="16g",  disk=(50, 100), net=(1500, 512)),
+53-    "CMN":      dict(cpus=0.1, mem="512m", disk=None,      net=(1500, 512)),
+54-    "CMD":      dict(cpus=0.1, mem="512m", disk=(50, 100), net=None),
+55-    "CDN":      dict(cpus=0.1, mem="16g",  disk=(50, 100), net=(1500, 512)),
+56-    "MDN":      dict(cpus=4,   mem="512m", disk=(50, 100), net=(1500, 512)),
+57-    "CMDN":     dict(cpus=0.1, mem="512m", disk=(50, 100), net=(1500, 512)),
+58-}
+59-
++ echo
+
++ echo ============================================================
+============================================================
++ echo 'PYTHON SYNTAX CHECK'
+PYTHON SYNTAX CHECK
++ echo ============================================================
+============================================================
++ python3 -m py_compile original_paper_phase1_runner.py
++ echo 'Python syntax check PASSED.'
+Python syntax check PASSED.
++ echo
+
++ echo ============================================================
+============================================================
++ echo 'PATCH COMPLETE'
+PATCH COMPLETE
++ echo ============================================================
+============================================================
