@@ -1,0 +1,35 @@
+delight-nashorn-sandbox local memory diagnostic
+
+Environment:
+- macOS Docker Desktop
+- Docker VM: aarch64
+- historical RAFT image: linux/amd64
+- amd64 image executed under ARM emulation
+
+Original-paper M configuration:
+- CPU: 4
+- memory: 512 MiB
+
+Observed at 512 MiB:
+- Maven repeatedly exited with code 137.
+- Not all repetitions produced parseable JUnit results.
+- Fresh containers removed the previous repeated-run state-contamination issue.
+
+Diagnostic configuration:
+- CPU: 4
+- memory: 1 GiB
+- not an original-paper configuration
+
+Observed at 1 GiB:
+- 3/3 executions produced parseable test results.
+- 18 test cases were parsed per execution.
+- Maven exit code was 1 in all three executions.
+
+Interpretation:
+The increase from 512 MiB to 1 GiB removed the Maven/Surefire termination
+problem sufficiently for the complete test output to be parsed. This suggests
+that the local Docker Desktop + ARM-to-amd64 environment behaves differently
+from the original native Linux experiment at the paper's 512 MiB setting.
+
+The 1 GiB results are diagnostic only and must not be reported as the original
+paper's M configuration.

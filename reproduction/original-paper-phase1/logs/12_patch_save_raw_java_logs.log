@@ -1,0 +1,1 @@
+Patched runner to preserve stdout/stderr for every Java run.

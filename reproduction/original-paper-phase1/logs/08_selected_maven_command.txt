@@ -1,0 +1,5 @@
+SHELL:
+zsh
+
+FULL TEST COMMAND:
+MVNOPTIONS="-Ddependency-check.skip=true -Dmaven.repo.local=/home/throttling/deps -Dgpg.skip=true -DfailIfNoTests=false -Dskip.installnodenpm -Dskip.npm -Dskip.yarn -Dlicense.skip -Dcheckstyle.skip -Drat.skip -Denforcer.skip -Danimal.sniffer.skip -Dmaven.javadoc.skip -Dfindbugs.skip -Dwarbucks.skip -Dmodernizer.skip -Dimpsort.skip -Dmdep.analyze.skip -Dpgpverify.skip -Dxml.skip -Dcobertura.skip=true -Dfindbugs.skip=true -Dsurefire.runOrder=reversealphabetical";  projectZip=$(find -maxdepth 1 -type f -name \*.zip | cut -d/ -f2); userProject=$(cut -d= -f1 <<<${projectZip%.zip} | rev | cut -d- -f2- | rev); user=$(cut -d. -f1 <<<$userProject); project=$(cut -d. -f2- <<<$userProject); module=$(cut -d= -f2- <<<${projectZip%.zip} | tr '+' '/'); cd $user/$project; /home/throttling/apache-maven-3.5.4/bin/mvn test -pl $module ${=MVNOPTIONS};

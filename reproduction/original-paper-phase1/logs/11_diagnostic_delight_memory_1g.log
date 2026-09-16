@@ -1,0 +1,22 @@
++ echo 'DIAGNOSTIC ONLY - NOT ORIGINAL PAPER CONFIGURATION'
+DIAGNOSTIC ONLY - NOT ORIGINAL PAPER CONFIGURATION
++ echo 'Project: delight-nashorn-sandbox'
+Project: delight-nashorn-sandbox
++ echo 'CPU: 4'
+CPU: 4
++ echo 'Memory: 1 GiB'
+Memory: 1 GiB
++ echo 'Runs: 3'
+Runs: 3
++ date
+Wed Sep 16 01:33:43 EDT 2026
++ python3 original_paper_phase1_runner.py --only java --project javadelight.delight-nashorn-sandbox --configs M_DIAG_1G --runs 3
+[01:33:43] === java/javadelight.delight-nashorn-sandbox (jonbell/raft:javadelight.delight-nashorn-sandbox-da35edc_dot-latest) ===
+[01:33:47]   java cmd (zsh): MVNOPTIONS="-Ddependency-check.skip=true -Dmaven.repo.local=/home/throttling/deps -Dgpg.skip=true -DfailIfNoTests=false -Dskip.installnodenpm -Dskip.npm -Dskip....
+[01:34:26]   [javadelight.delight-nashorn-sandbox] config M_DIAG_1G run 1: parsed 18 tests (mvn exit=1)
+[01:34:55]   [javadelight.delight-nashorn-sandbox] config M_DIAG_1G run 2: parsed 18 tests (mvn exit=1)
+[01:35:56]   [javadelight.delight-nashorn-sandbox] config M_DIAG_1G run 3: parsed 18 tests (mvn exit=1)
+[01:35:56]   [javadelight.delight-nashorn-sandbox] config M_DIAG_1G: 3/3 runs produced parseable test results
+[01:35:56] ALL DONE
++ date
+Wed Sep 16 01:35:56 EDT 2026

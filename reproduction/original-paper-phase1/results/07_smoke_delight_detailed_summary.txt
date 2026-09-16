@@ -1,0 +1,21 @@
+FILE
+reproduction/original-paper-phase1/results/smoke/java/results/javadelight.delight-nashorn-sandbox.csv
+
+TOTAL CSV ROWS
+1
+
+============================================================
+CONFIG: M
+============================================================
+Observed run indexes: [1]
+Number of runs: 1
+
+Run 1
+  Parsed test cases: 1
+  Status counts: {'pass': 1}
+  All parsed tests passed.
+
+============================================================
+ALL NON-PASS OUTCOMES
+============================================================
+None

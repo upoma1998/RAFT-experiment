@@ -1,0 +1,5 @@
+[01:47:25] === java/javadelight.delight-nashorn-sandbox (jonbell/raft:javadelight.delight-nashorn-sandbox-da35edc_dot-latest) ===
+[01:47:30]   java cmd (zsh): MVNOPTIONS="-Ddependency-check.skip=true -Dmaven.repo.local=/home/throttling/deps -Dgpg.skip=true -DfailIfNoTests=false -Dskip.installnodenpm -Dskip.npm -Dskip....
+[01:48:10]   [javadelight.delight-nashorn-sandbox] config M_DIAG_1G run 1: parsed 18 tests (mvn exit=1)
+[01:48:10]   [javadelight.delight-nashorn-sandbox] config M_DIAG_1G: 1/1 runs produced parseable test results
+[01:48:10] ALL DONE

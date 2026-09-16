@@ -1,0 +1,1 @@
+Patched Java runner to use one fresh Docker container per repetition.

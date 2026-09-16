@@ -42,8 +42,6 @@ CONFIGS = {
     "Baseline": dict(cpus=4,   mem="16g",  disk=None,      net=None),
     "C":        dict(cpus=0.1, mem="16g",  disk=None,      net=None),
     "M":        dict(cpus=4,   mem="512m", disk=None,      net=None),
-    "M_DIAG_1G": dict(cpus=4, mem="1g", disk=None, net=None),
-    "LOCAL_UNLIMITED": dict(cpus=4, mem=None, disk=None, net=None),
     "D":        dict(cpus=4,   mem="16g",  disk=(50, 100), net=None),
     "N":        dict(cpus=4,   mem="16g",  disk=None,      net=(1500, 512)),
     "CM":       dict(cpus=0.1, mem="512m", disk=None,      net=None),
@@ -211,154 +209,62 @@ def java_project_info(image):
 def run_java(image, project_key, configs, runs, writer, deadline=None, run_offset=0):
     testbody, shell = java_project_info(image)
     log(f"  java cmd ({shell}): {testbody[:160]}...")
-
     for cfg_name in configs:
         if deadline and time.time() > deadline:
             log(f"  [{project_key}] deadline reached, stopping before config {cfg_name}")
-            writer.write_error(
-                cfg_name, "*", "DEADLINE_STOP",
-                "job wall-clock budget exceeded"
-            )
+            writer.write_error(cfg_name, "*", "DEADLINE_STOP", "job wall-clock budget exceeded")
             break
-
         cfg = CONFIGS[cfg_name]
         flags = docker_flags(cfg)
         run_image = image
         net_prelude = ""
-
         if cfg["net"] is not None:
             run_image = ensure_tc_image(image)
             flags = flags + ["--cap-add", "NET_ADMIN"]
             down, up = cfg["net"]
             net_prelude = NET_PRELUDE.format(up=up, down=down)
-
-        successful_parses = 0
-
-        for local_idx in range(1, runs + 1):
-            run_idx = local_idx + run_offset
-
-            if deadline and time.time() > deadline:
-                writer.write_error(
-                    cfg_name, run_idx, "DEADLINE_STOP",
-                    "job wall-clock budget exceeded"
-                )
-                break
-
-            # IMPORTANT:
-            # Each repetition gets a NEW Docker container.
-            # This prevents filesystem/process state from one repetition
-            # affecting the next repetition.
-            inner = f"""
+        inner = f"""
 {net_prelude}
-echo "===RUN_START {run_idx}==="
-{testbody}
-mvn_exit=$?
-echo "===MVN_EXIT $mvn_exit==="
-find . -path '*/target/surefire-reports/TEST-*.xml' -exec cat {{}} \\; 2>/dev/null
-echo "===RUN_END {run_idx}==="
-exit 0
+for i in $(seq 1 {runs}); do
+  echo "===RUN_START $i==="
+  {testbody}
+  echo "===MVN_EXIT $?==="
+  find . -path '*/target/surefire-reports/TEST-*.xml' -exec cat {{}} \\; 2>/dev/null
+  find . -path '*/target/surefire-reports' -type d -exec rm -rf {{}} + 2>/dev/null
+  echo "===RUN_END $i==="
+done
 """
-
-            try:
-                r = sh(
-                    ["docker", "run", "--rm", *flags,
-                     run_image, shell, "-c", inner],
-                    timeout=RUN_TIMEOUT_SEC,
-                )
-            except subprocess.TimeoutExpired as e:
-                writer.write_error(
-                    cfg_name, run_idx, "TIMEOUT", str(e)[:2000]
-                )
-                log(
-                    f"  [{project_key}] config {cfg_name} "
-                    f"run {run_idx}: TIMEOUT"
-                )
-                continue
-
-            # Save the complete raw output of every execution.
-            # This preserves evidence even when JUnit parsing succeeds.
-            raw_dir = (
-                RESULTS_ROOT
-                / "java"
-                / "raw-logs"
-                / project_key
-                / cfg_name
-            )
-            raw_dir.mkdir(parents=True, exist_ok=True)
-
-            (raw_dir / f"run_{run_idx:03d}.stdout.log").write_text(
-                r.stdout or "",
-                errors="replace"
-            )
-
-            (raw_dir / f"run_{run_idx:03d}.stderr.log").write_text(
-                r.stderr or "",
-                errors="replace"
-            )
-
-            tests = parse_junit_blob(r.stdout)
-
-            exit_match = re.search(
-                r"===MVN_EXIT\s+(\d+)===", r.stdout
-            )
-            mvn_exit = (
-                exit_match.group(1)
-                if exit_match
-                else "UNKNOWN"
-            )
-
+        try:
+            r = sh(["docker", "run", "--rm", *flags, run_image, shell, "-c", inner],
+                   timeout=RUN_TIMEOUT_SEC * runs)
+        except subprocess.TimeoutExpired as e:
+            writer.write_error(cfg_name, "*", "TIMEOUT", str(e)[:2000])
+            log(f"  [{project_key}] config {cfg_name}: TIMEOUT")
+            continue
+        chunks = r.stdout.split("===RUN_START ")
+        for chunk in chunks[1:]:
+            idx_str, _, rest = chunk.partition("===")
+            run_idx = idx_str.strip()
+            if run_offset:
+                try:
+                    run_idx = str(int(run_idx) + run_offset)
+                except ValueError:
+                    pass
+            tests = parse_junit_blob(rest)
             if not tests:
-                writer.write_error(
-                    cfg_name,
-                    run_idx,
-                    f"NO_TESTS_PARSED_MVN_EXIT_{mvn_exit}",
-                    r.stdout[-5000:]
-                    + "\n---STDERR---\n"
-                    + r.stderr[-3000:]
-                )
-
-                log(
-                    f"  [{project_key}] config {cfg_name} "
-                    f"run {run_idx}: no tests parsed "
-                    f"(mvn exit={mvn_exit})"
-                )
-                continue
-
-            successful_parses += 1
-
+                writer.write_error(cfg_name, run_idx, "NO_TESTS_PARSED",
+                                    rest[:3000] + "\n---STDERR---\n" + r.stderr[-2000:])
             for classname, name, status, message in tests:
-                writer.write_test(
-                    cfg_name,
-                    run_idx,
-                    classname,
-                    name,
-                    status,
-                    message
-                )
-
+                writer.write_test(cfg_name, run_idx, classname, name, status, message)
                 if status in ("failure", "error"):
-                    writer.write_error(
-                        cfg_name,
-                        run_idx,
-                        status.upper(),
-                        f"{classname}.{name}: {message}"
-                    )
-
-            writer.flush()
-
-            log(
-                f"  [{project_key}] config {cfg_name} "
-                f"run {run_idx}: parsed {len(tests)} tests "
-                f"(mvn exit={mvn_exit})"
-            )
-
+                    writer.write_error(cfg_name, run_idx, status.upper(),
+                                        f"{classname}.{name}: {message}")
+        if r.returncode != 0 and not chunks[1:]:
+            writer.write_error(cfg_name, "*", "CONTAINER_FAILURE",
+                                r.stdout[-2000:] + "\n---STDERR---\n" + r.stderr[-2000:])
         writer.flush()
+        log(f"  [{project_key}] config {cfg_name}: done ({len(chunks)-1} runs parsed)")
 
-        log(
-            f"  [{project_key}] config {cfg_name}: "
-            f"{successful_parses}/{runs} runs produced "
-            f"parseable test results"
-        )
 
 # ---------------- Python (flapy) ----------------
 

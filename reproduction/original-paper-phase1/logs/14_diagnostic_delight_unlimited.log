@@ -1,0 +1,24 @@
++ echo ============================================================
+============================================================
++ echo 'DIAGNOSTIC ONLY - NOT ORIGINAL PAPER CONFIGURATION'
+DIAGNOSTIC ONLY - NOT ORIGINAL PAPER CONFIGURATION
++ echo 'Project: delight-nashorn-sandbox'
+Project: delight-nashorn-sandbox
++ echo 'CPU: 4'
+CPU: 4
++ echo 'Memory: Docker memory limit disabled'
+Memory: Docker memory limit disabled
++ echo 'Runs: 1'
+Runs: 1
++ echo ============================================================
+============================================================
++ date
+Wed Sep 16 01:52:10 EDT 2026
++ python3 original_paper_phase1_runner.py --only java --project javadelight.delight-nashorn-sandbox --configs LOCAL_UNLIMITED --runs 1
+[01:52:10] === java/javadelight.delight-nashorn-sandbox (jonbell/raft:javadelight.delight-nashorn-sandbox-da35edc_dot-latest) ===
+[01:52:12]   java cmd (zsh): MVNOPTIONS="-Ddependency-check.skip=true -Dmaven.repo.local=/home/throttling/deps -Dgpg.skip=true -DfailIfNoTests=false -Dskip.installnodenpm -Dskip.npm -Dskip....
+[01:53:16]   [javadelight.delight-nashorn-sandbox] config LOCAL_UNLIMITED run 1: parsed 79 tests (mvn exit=0)
+[01:53:16]   [javadelight.delight-nashorn-sandbox] config LOCAL_UNLIMITED: 1/1 runs produced parseable test results
+[01:53:16] ALL DONE
++ date
+Wed Sep 16 01:53:16 EDT 2026

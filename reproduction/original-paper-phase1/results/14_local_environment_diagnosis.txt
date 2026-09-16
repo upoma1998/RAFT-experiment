@@ -1,0 +1,44 @@
+Local environment diagnosis for delight-nashorn-sandbox
+
+Environment:
+- Host: macOS
+- Docker: Docker Desktop
+- Docker VM architecture: aarch64
+- Historical RAFT image architecture: amd64
+- Historical Java runtime: OpenJDK 8 amd64
+
+Observed behavior:
+
+Original-paper M configuration:
+- CPU: 4
+- memory: 512 MiB
+- Maven/Surefire repeatedly terminated with exit code 137.
+- Some executions did not produce complete JUnit results.
+
+Diagnostic 1 GiB configuration:
+- CPU: 4
+- memory: 1 GiB
+- JUnit results were partially/completely emitted.
+- Maven still failed.
+- Surefire reported Process Exit Code 137.
+- Crashed test: delight.nashornsandbox.TestLimitCPU.
+
+Diagnostic LOCAL_UNLIMITED configuration:
+- CPU: 4
+- no Docker memory limit
+- Maven reported BUILD SUCCESS.
+- Maven exit code: 0.
+
+Conclusion:
+The historical image and reconstructed runner can execute successfully in the
+local Docker environment when the Docker memory limit is removed.
+
+The failures observed at 512 MiB and 1 GiB are therefore associated with
+resource restriction in this local Docker Desktop / ARM-to-amd64 emulated
+environment.
+
+These local diagnostic executions must not be reported as a faithful
+reproduction of the original paper's 512 MiB configuration.
+
+A native x86-64 Linux environment with sufficient host memory should be used
+for the actual original-paper experiment.

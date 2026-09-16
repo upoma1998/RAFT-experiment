@@ -1,0 +1,30 @@
+============================================================
+DELIGHT-NASHORN-SANDBOX -- 1 GiB DIAGNOSTIC
+============================================================
+
+Total CSV rows: 54
+
+============================================================
+CONFIG: M_DIAG_1G
+============================================================
+Run indexes: [1, 2, 3]
+
+RUN 1
+  Tests parsed: 18
+  Status counts: {'pass': 18}
+  All tests passed.
+
+RUN 2
+  Tests parsed: 18
+  Status counts: {'pass': 18}
+  All tests passed.
+
+RUN 3
+  Tests parsed: 18
+  Status counts: {'pass': 18}
+  All tests passed.
+
+============================================================
+FAILURE MESSAGE COUNTS
+============================================================
+No failures found.
