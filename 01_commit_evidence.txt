@@ -1,0 +1,37 @@
+Script started on 2026-09-19 14:37:52-05:00
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LC_CTYPE = "UTF-8",
+	LANG = "C.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to a fallback locale ("C.UTF-8").
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(438)$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	[31m00_fork_clone.txt[m
+	[31m01_commit_evidence.txt[m
+
+nothing added to commit but untracked files present (use "git add" to track)
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(439)$ git branch --show-current
+main
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(440)$ echo
+
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(441)$ echo "===== FINDING ====="
+===== FINDING =====
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(442)$ echo "The cloned repository is connected to my GitHub fork as origin."
+The cloned repository is connected to my GitHub fork as origin.
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(443)$ echo
+
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(444)$ echo "NEXT STEP:"
+NEXT STEP:
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(445)$ echo "Commit and push the experiment evidence files to my fork."
+Commit and push the experiment evidence files to my fork.
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(446)$ exit
+exit
+
+Script done on 2026-09-19 14:38:10-05:00
