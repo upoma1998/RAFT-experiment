@@ -1,4 +1,14 @@
-Script started on 2026-09-19 14:37:52-05:00
+Script started on 2026-09-19 14:37:36-05:00
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LC_CTYPE = "UTF-8",
+	LANG = "C.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to a fallback locale ("C.UTF-8").
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(438)$ cd "$WORK/RAFT_REPO/RAFT-experiment"
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(439)$ script -q 01_commit_evidence.txt
 perl: warning: Setting locale failed.
 perl: warning: Please check that your locale settings:
 	LANGUAGE = (unset),
@@ -33,5 +43,71 @@ NEXT STEP:
 Commit and push the experiment evidence files to my fork.
 ]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(446)$ exit
 exit
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(440)$ git add 00_fork_clone.txt 01_commit_evidence.txt
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(441)$ git commit -m "Add RAFT experiment setup logs"
+[main aa00cee] Add RAFT experiment setup logs
+ Committer: Rahma Simin Ali <rahmasimin@login2.ls6.tacc.utexas.edu>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
 
-Script done on 2026-09-19 14:38:10-05:00
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 2 files changed, 78 insertions(+)
+ create mode 100644 00_fork_clone.txt
+ create mode 100644 01_commit_evidence.txt
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(442)$ git push origin $(git branch --show-current)
+Username for 'https://github.com': upoma1998
+Password for 'https://upoma1998@github.com': 
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed for 'https://github.com/upoma1998/RAFT-experiment.git/'
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(443)$ git push origin $(git branch --show-current)
+Username for 'https://github.com': upoma1998
+Password for 'https://upoma1998@github.com': 
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed for 'https://github.com/upoma1998/RAFT-experiment.git/'
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(444)$ git push origin $(git branch --show-current)
+Username for 'https://github.com': upoma1998
+Password for 'https://upoma1998@github.com': 
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed for 'https://github.com/upoma1998/RAFT-experiment.git/'
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(445)$ git push origin $(git branch --show-current)[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ccommit -m "Add RAFT experiment setup logs"
+On branch main
+Your branch is ahead of 'origin/main' by 1 commit.
+  (use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(446)$ git push origin $(git branch --show-current)
+Username for 'https://github.com': upoma1998
+Password for 'https://upoma1998@github.com': 
+remote: Invalid username or token. Password authentication is not supported for Git operations.
+fatal: Authentication failed for 'https://github.com/upoma1998/RAFT-experiment.git/'
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(447)$ ls -la ~/.ssh
+total 20
+drwx------ 2 rahmasimin G-829285  100 Sep 17 23:10 [0m[38;5;33m.[0m
+drwx------ 8 rahmasimin G-829285 4096 Sep 18 13:34 [38;5;33m..[0m
+-rw------- 1 rahmasimin G-829285  591 Sep 17 22:38 authorized_keys
+-rw------- 1 rahmasimin G-829285 2635 Sep 17 22:38 id_rsa
+-rw-r--r-- 1 rahmasimin G-829285  591 Sep 17 22:38 id_rsa.pub
+-rw-r--r-- 1 rahmasimin G-829285  922 Sep 19 12:42 known_hosts
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(448)$ cat id_rsa.pub
+cat: id_rsa.pub: No such file or directory
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(449)$ ls
+00_fork_clone.txt       README.md             phase1_registry.py  [0m[38;5;33mresults[0m  trigger_sweep.py
+01_commit_evidence.txt  phase1_registry.json  phase1_runner.py    [38;5;33mscripts[0m
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(450)$ cd scripts
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experiment/scriptslogin2.ls6(451)$ ls
+analyze.py  download_artifacts_seq.sh  fix_websocket_dup.py  merge_data.py  stats_lite.py
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experiment/scriptslogin2.ls6(452)$ cd ..
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(453)$ ls
+00_fork_clone.txt       README.md             phase1_registry.py  [0m[38;5;33mresults[0m  trigger_sweep.py
+01_commit_evidence.txt  phase1_registry.json  phase1_runner.py    [38;5;33mscripts[0m
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(454)$ cat ~/.ssh/id_ed25519.pub[1P.pub[1P.pub[1P.pub[1P.pub[1P.pub[1P.pub[1P.pubr.pubs.puba.pub
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQ18swM1zjVgIa2eMwXSxeJ6ePDhf5zgOhngqABbIEQ9WpoXHnfm6InXk7WPtdKwKY2mj38pfOwKUU7mhcV8ak2M9tsvTzG5tna4/3gAKZ903ZbsbuLWjmHmUPr7abBFYbq1Nbo3WZcJQN50Z4A/FXnkXBxJ0C00CuAzDYPRPHseFZsYTRKj0wCNtOtTBZeppeFCrbCaLe/C6jzH0XNgx0kxeHaePWkxbjCEg1bR9BtK8AdN64TvpJqGwpsihtkqxtAQ0RmMRaG5RGJtH8noX8d5IEsIE+vqdtx4jyyv9ehUWUIhlGbwr3u4BpbQg6UtAvvmsHS+FUMlL6TbYXWBfvnlbJldqyL5387Bh1QaSuAVDhzFTvdGIbZyKJjUty8yer6blUa21q5p9UqlWmQUMzpElndA3CyquqftBthcnVhV6+M5YVRpoBFCA1IJHwYMe6OrQrhdr733Lz0A4nlhMjRE4r9puZeZJcLyEFrGu2P3tWPsnOtKwMrKln7lzmtkc= rahmasimin@login1.ls6.tacc.utexas.edu
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(455)$ cat ~/.ssh/id_rsa.pub[K[K[K[K[K[K[K[K[K[K
