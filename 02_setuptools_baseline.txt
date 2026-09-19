@@ -1,0 +1,72 @@
+Script started on 2026-09-19 15:10:54-05:00
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LC_CTYPE = "UTF-8",
+	LANG = "C.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to a fallback locale ("C.UTF-8").
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(447)$ echo "===== RAFT-EXPERIMENT FIRST RUN ====="
+===== RAFT-EXPERIMENT FIRST RUN =====
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(448)$ echo "Repository: my fork of jiajuwang/RAFT-experiment"
+Repository: my fork of jiajuwang/RAFT-experiment
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(449)$ echo "Workflow: Phase 1 - Sweep"
+Workflow: Phase 1 - Sweep
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(450)$ echo "Language: python"
+Language: python
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(451)$ echo "Project: pypa-setuptools"
+Project: pypa-setuptools
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(452)$ echo "Config: Baseline"
+Config: Baseline
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(453)$ echo "Expected: 10 GitHub Actions jobs x 5 runs = 50 runs"
+Expected: 10 GitHub Actions jobs x 5 runs = 50 runs
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(454)$ exit
+exit
+
+Script done on 2026-09-19 15:11:10-05:00
+Script started on 2026-09-19 16:48:41-05:00
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LC_CTYPE = "UTF-8",
+	LANG = "C.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to a fallback locale ("C.UTF-8").
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(522)$ echo
+
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(523)$ echo "===== RESULT ====="
+===== RESULT =====
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(524)$ echo "GitHub Actions Baseline experiment completed."
+GitHub Actions Baseline experiment completed.
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(525)$ echo "Project: pypa-setuptools"
+Project: pypa-setuptools
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(526)$ echo "Language: python"
+Language: python
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(527)$ echo "Configuration: Baseline"
+Configuration: Baseline
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(528)$ echo "Jobs: 10"
+Jobs: 10
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(529)$ echo "Runs per job: 5"
+Runs per job: 5
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(530)$ echo "Total intended runs: 50"
+Total intended runs: 50
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(531)$ echo "All GitHub Actions jobs completed successfully."
+All GitHub Actions jobs completed successfully.
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(532)$ echo
+
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(533)$ echo "FINDING:"
+FINDING:
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(534)$ echo "The RAFT-experiment GitHub Actions workflow successfully completed the setuptools Baseline  configuration."
+The RAFT-experiment GitHub Actions workflow successfully completed the setuptools Baseline configuration.
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(535)$ echo
+
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(536)$ echo "NEXT STEP:"
+NEXT STEP:
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(537)$ echo "Run the CPU-throttled configuration C for the same project."
+Run the CPU-throttled configuration C for the same project.
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(538)$ exit
+exit
+
+Script done on 2026-09-19 16:48:56-05:00
