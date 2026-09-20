@@ -1,0 +1,76 @@
+Script started on 2026-09-19 16:50:41-05:00
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LC_CTYPE = "UTF-8",
+	LANG = "C.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to a fallback locale ("C.UTF-8").
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(539)$ echo "===== RAFT-EXPERIMENT CPU THROTTLING ====="
+===== RAFT-EXPERIMENT CPU THROTTLING =====
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(540)$ echo "Language: python"
+Language: python
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(541)$ echo "Project: pypa-setuptools"
+Project: pypa-setuptools
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(542)$ echo "Configuration: C"
+Configuration: C
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(543)$ echo "Resource: CPU throttling"
+Resource: CPU throttling
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(544)$ echo "Jobs: 10"
+Jobs: 10
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(545)$ echo "Runs per job: 5"
+Runs per job: 5
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(546)$ echo "Total intended runs: 50"
+Total intended runs: 50
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(547)$ echo
+
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(548)$ echo "Experiment submitted through GitHub Actions."
+Experiment submitted through GitHub Actions.
+]2;rahmasimin@login1.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin1.ls6(549)$ exit
+exit
+
+Script done on 2026-09-19 16:52:39-05:00
+Script started on 2026-09-19 20:43:02-05:00
+perl: warning: Setting locale failed.
+perl: warning: Please check that your locale settings:
+	LANGUAGE = (unset),
+	LC_ALL = (unset),
+	LC_CTYPE = "UTF-8",
+	LANG = "C.UTF-8"
+    are supported and installed on your system.
+perl: warning: Falling back to a fallback locale ("C.UTF-8").
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(578)$ echo
+
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(579)$ echo "===== RESULT ====="
+===== RESULT =====
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(580)$ echo "GitHub Actions CPU-throttled experiment completed successfully."
+GitHub Actions CPU-throttled experiment completed successfully.
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(581)$ echo "Project: pypa-setuptools"
+Project: pypa-setuptools
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(582)$ echo "Configuration: C"
+Configuration: C
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(583)$ echo "Resource: CPU throttling"
+Resource: CPU throttling
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(584)$ echo "Jobs: 10"
+Jobs: 10
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(585)$ echo "Runs per job: 5"
+Runs per job: 5
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(586)$ echo "Total intended runs: 50"
+Total intended runs: 50
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(587)$ echo
+
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(588)$ echo "FINDING:"
+FINDING:
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(589)$ echo "The RAFT-experiment workflow successfully completed the CPU-throttled configuration for setuptools." [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K"
+The RAFT-experiment workflow successfully completed the CPU-throttled configuration for setuptools.
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(590)$ echo
+
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(591)$ echo "NEXT STEP:"
+NEXT STEP:
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(592)$ echo "Run the Memory-throttled configuration M for the same project."
+Run the Memory-throttled configuration M for the same project.
+]2;rahmasimin@login2.ls6:/work/11898/rahmasimin/ls6/RAFT_REPO/RAFT-experimentlogin2.ls6(593)$ exit
+exit
+
+Script done on 2026-09-19 20:43:20-05:00
